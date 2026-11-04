@@ -21,7 +21,7 @@ const faq = [
   { q: 'Sous quel délai répondez-vous ?', a: 'Nous répondons à chaque demande sous 24 h ouvrées. La date d’intervention est fixée avec vous et indiquée sur le devis.' },
   { q: 'Comment préparer ma demande ?', a: 'Indiquez votre commune, le type de logement et ce que vous souhaitez. Quelques photos de l’existant (emplacement prévu, ancien appareil, tableau électrique) nous aident à chiffrer plus vite : vous pouvez les envoyer par WhatsApp.' },
   { q: 'Travaillez-vous avec les professionnels, agences et syndics ?', a: 'Oui : contrats d’entretien pour plusieurs logements ou locaux, interventions planifiées avant la saison et délais définis au contrat. Indiquez simplement votre profil dans le formulaire.' },
-  { q: 'Où intervenez-vous ?', a: 'Basés à Hyères, nous intervenons partout dans le Var. Plus loin ? Sur demande, nous étudions chaque projet.' },
+  { q: 'Où intervenez-vous ?', a: `Basés à ${site.city}, nous intervenons ${site.zoneText}. ${site.zoneFar}` },
 ];
 const faqLd = {
   '@context': 'https://schema.org',
@@ -32,7 +32,7 @@ const atouts = [
   ['doc', 'Devis gratuit', 'Écrit, détaillé, sans engagement'],
   ['shield', 'Prix ferme', 'Le prix du devis est celui facturé'],
   ['clock', 'Réponse en 24 h', 'Sur chaque demande, jours ouvrés'],
-  ['pin', 'Tout le Var', 'Basés à Hyères, on se déplace'],
+  ['pin', 'Var & alentours', 'Basés à Hyères, et plus loin sur demande'],
 ] as const;
 const engagements = [
   ['user', 'Un seul interlocuteur', 'Le même contact du premier appel à la mise en service. Pas de plateforme, pas de relais.'],
@@ -53,15 +53,15 @@ const pros = [
 ] as const;
 ---
 <Layout
-  title="La Cigale Énergie | Énergie & confort de l’habitat à Hyères et dans le Var"
-  description="La Cigale Énergie, basée à Hyères : énergie et confort de l’habitat dans tout le Var. Climatisation et pompe à chaleur dès maintenant, électricité, solaire, chauffage et plomberie bientôt. Devis gratuit, prix ferme, réponse sous 24 h ouvrées."
+  title="La Cigale Énergie | Énergie & confort de l’habitat à Hyères, dans le Var et alentours"
+  description="La Cigale Énergie, basée à Hyères : énergie et confort de l’habitat dans le Var et ses alentours. Climatisation et pompe à chaleur dès maintenant, électricité, solaire, chauffage et plomberie bientôt. Devis gratuit, prix ferme, réponse sous 24 h ouvrées."
   jsonld={[faqLd]}
 >
   <!-- HERO -->
   <section class="hero-dark">
     <div class="container-site grid items-center gap-14 pb-20 pt-12 md:grid-cols-[1.15fr_1fr] md:pb-28 md:pt-20">
       <div>
-        <p class="eyebrow inline-flex items-center gap-2"><Icon name="pin" size={16} /> Basés à {site.city} · {site.region}</p>
+        <p class="eyebrow inline-flex items-center gap-2"><Icon name="pin" size={16} /> Basés à {site.city} · {site.region} et alentours</p>
         <h1 class="mt-4 text-[clamp(2.6rem,9.5vw,4.4rem)] uppercase">
           Énergie & confort de l’habitat,<br /><span class="text-accent">près de chez vous.</span>
         </h1>
@@ -179,12 +179,12 @@ const pros = [
     <div class="container-site grid items-center gap-10 md:grid-cols-[1fr_1.2fr]">
       <div class="reveal">
         <p class="eyebrow">Zone d’intervention</p>
-        <h2 id="zone-titre" class="h2 uppercase">Partout dans le {site.region}</h2>
-        <p class="mt-4 text-lg text-muted">Basés à {site.city}, nous intervenons partout dans le {site.region}. Une équipe proche, des déplacements courts et une bonne connaissance du terrain : bord de mer, copropriétés, résidences secondaires.</p>
+        <h2 id="zone-titre" class="h2 uppercase">Basés à {site.city}, on se déplace</h2>
+        <p class="mt-4 text-lg text-muted">Nous intervenons {site.zoneText}, sans nous limiter à une liste de communes. Une équipe proche, des déplacements courts et une bonne connaissance du terrain : bord de mer, copropriétés, résidences secondaires.</p>
         <ul class="mt-6 flex flex-wrap gap-2">
           {site.zone.map((c) => <li class="rounded-full border border-line bg-white px-4 py-2 font-medium">{c}</li>)}
         </ul>
-        <p class="mt-4 text-muted">Plus loin ? Sur demande, nous étudions chaque projet.</p>
+        <p class="mt-4 text-muted">Ces communes ne sont que des exemples. {site.zoneFar}</p>
         <a href="#devis" class="btn btn-primary mt-6">Nous parler de votre projet <Icon name="arrow" size={18} /></a>
       </div>
       <div class="reveal" aria-hidden="true">

@@ -12,7 +12,10 @@ export const site = {
   instagram: 'lacigale.energie', // nom du compte, sans @
   hours: 'Du lundi au vendredi, 8 h – 18 h',
 
-  // Zone d'intervention affichée
+  // Zone d'intervention : phrase réutilisée partout sur le site
+  zoneText: 'dans le Var et ses alentours',
+  zoneFar: 'Plus loin ? Sur demande, sans problème : nous étudions chaque projet.',
+  // Communes affichées en exemple (pas une limite)
   zone: ['Hyères', 'Giens', 'La Londe-les-Maures', 'Carqueiranne', 'La Crau', 'Le Pradet', 'Toulon est'],
 
   // Mentions légales : à compléter uniquement dans les pages « Mentions légales » et « Confidentialité ».

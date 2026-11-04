@@ -56,7 +56,7 @@ const crumbLd = {
 ---
 <Layout
   title="Climatisation & pompe à chaleur à Hyères | La Cigale Énergie"
-  description="Installation, entretien, dépannage et remplacement de climatisation et pompe à chaleur à Hyères, Giens, La Londe, Carqueiranne et dans tout le Var. Devis gratuit, prix ferme, réponse sous 24 h ouvrées."
+  description="Installation, entretien, dépannage et remplacement de climatisation et pompe à chaleur à Hyères, Giens, La Londe, Carqueiranne, dans le Var et alentours. Devis gratuit, prix ferme, réponse sous 24 h ouvrées."
   jsonld={[faqLd, crumbLd]}
 >
   <!-- HERO -->
@@ -179,7 +179,7 @@ const crumbLd = {
         <h2 id="faq-titre" class="h2 uppercase">Climatisation & pompe à chaleur : vos questions</h2>
         <p class="mt-4 text-muted">Une autre question ? <a href={`mailto:${site.email}`} class="font-semibold text-accent-strong underline">Écrivez-nous</a>.</p>
         <div class="mt-8 rounded-2xl bg-accent-soft p-5">
-          <p class="flex items-start gap-3"><Icon name="pin" class="mt-1 shrink-0 text-accent-strong" /> <span>Basés à {site.city}, nous intervenons partout dans le {site.region}. Plus loin ? Sur demande, nous étudions chaque projet.</span></p>
+          <p class="flex items-start gap-3"><Icon name="pin" class="mt-1 shrink-0 text-accent-strong" /> <span>Basés à {site.city}, nous intervenons {site.zoneText}. {site.zoneFar}</span></p>
           <a href="/#zone" class="mt-3 inline-block font-semibold text-accent-strong underline">Voir la zone</a>
         </div>
       </div>
