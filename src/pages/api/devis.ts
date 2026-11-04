@@ -1,10 +1,12 @@
-// Fonction Cloudflare Pages : reçoit le formulaire de devis et l'envoie par email via Resend.
-// Variables à définir dans Cloudflare Pages > Settings > Variables and secrets :
-//   RESEND_API_KEY  (secret)   clé API Resend (https://resend.com)
+// Route serveur (fonction Vercel) : reçoit le formulaire de devis et l'envoie par email via Resend.
+// Variables à définir dans Vercel > Project > Settings > Environment Variables :
+//   RESEND_API_KEY             clé API Resend (https://resend.com)
 //   DEVIS_TO_EMAIL             adresse qui reçoit les demandes
 //   DEVIS_FROM_EMAIL           expéditeur, ex. "La Cigale Énergie <devis@votre-domaine.fr>"
 //                              (par défaut : onboarding@resend.dev, pour les tests)
+import type { APIRoute } from 'astro';
 
+export const prerender = false;
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 const profils: Record<string, string> = {
   particulier: 'Particulier',
@@ -15,7 +17,8 @@ const profils: Record<string, string> = {
 const json = (body: object, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
 
-export const onRequestPost = async ({ request, env }: { request: Request; env: Record<string, string> }) => {
+export const POST: APIRoute = async ({ request }) => {
+  const env = process.env as Record<string, string | undefined>;
   let d: Record<string, string>;
   try {
     d = await request.json();

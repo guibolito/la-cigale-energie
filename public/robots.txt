@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://la-cigale-energie.pages.dev/sitemap-index.xml
+Sitemap: https://la-cigale-energie.vercel.app/sitemap-index.xml

@@ -15,17 +15,16 @@ Où se trouvent les choses :
 - `src/components/EnergyVisual.astro` : illustration en haut de l’accueil (maison + domaines)
 - `src/components/HeroVisual.astro` : illustration clim animée en haut de la page climatisation
 - `src/styles/global.css` : couleurs (variables en haut)
-- `functions/api/devis.ts` : envoi des demandes de devis par email
+- `src/pages/api/devis.ts` : envoi des demandes de devis par email
 
-## Mettre en ligne (Cloudflare Pages)
-1. Mettre ce dossier dans un dépôt GitHub (privé).
-2. Cloudflare > Workers & Pages > Create > Pages > Connect to Git > choisir le dépôt.
-   Build command : `npm run build` — Output directory : `dist`.
-3. Dans Settings > Variables and secrets, ajouter :
+## Mettre en ligne (Vercel)
+1. vercel.com > Add New > Project > importer ce dépôt GitHub (Astro est détecté tout seul).
+2. Dans Settings > Environment Variables, ajouter :
    - `RESEND_API_KEY` (clé créée sur resend.com)
    - `DEVIS_TO_EMAIL` (adresse qui reçoit les demandes)
    - `DEVIS_FROM_EMAIL` (facultatif, une fois votre domaine validé chez Resend)
-4. Chaque modification poussée sur GitHub met le site à jour automatiquement.
+   puis relancer un déploiement (Deployments > Redeploy).
+3. Chaque modification poussée sur GitHub met le site à jour automatiquement.
 
 ## Avant de publier
 - Remplacer téléphone, email, Instagram, WhatsApp dans `src/config/site.ts`.
