@@ -1,0 +1,257 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import Faq from '../components/Faq.astro';
+import DevisForm from '../components/DevisForm.astro';
+import EnergyVisual from '../components/EnergyVisual.astro';
+import Etapes from '../components/Etapes.astro';
+import Realisations from '../components/Realisations.astro';
+import { site } from '../config/site';
+import { services } from '../config/services';
+import { formules } from '../data/entretien';
+
+const actifs = services.filter((s) => s.enabled);
+const bientot = services.filter((s) => !s.enabled);
+const listeBientot = bientot.map((s) => s.name.toLowerCase()).join(', ').replace(/, ([^,]*)$/, ' et $1');
+const nomsActifs = actifs.map((s) => s.name.toLowerCase()).join(', ');
+
+const faq = [
+  { q: 'Le devis est-il gratuit ?', a: 'Oui, et sans engagement. Après un échange et, si besoin, une visite ou quelques photos, vous recevez un devis écrit et détaillé, avec un prix ferme : c’est ce prix qui est facturé.' },
+  { q: 'Quels travaux proposez-vous aujourd’hui ?', a: `Aujourd’hui : ${nomsActifs}.${bientot.length ? ` D’autres domaines ouvriront bientôt : ${listeBientot}.` : ''}` },
+  { q: 'Sous quel délai répondez-vous ?', a: 'Nous répondons à chaque demande sous 24 h ouvrées. La date d’intervention est fixée avec vous et indiquée sur le devis.' },
+  { q: 'Comment préparer ma demande ?', a: 'Indiquez votre commune, le type de logement et ce que vous souhaitez. Quelques photos de l’existant (emplacement prévu, ancien appareil, tableau électrique) nous aident à chiffrer plus vite : vous pouvez les envoyer par WhatsApp.' },
+  { q: 'Travaillez-vous avec les professionnels, agences et syndics ?', a: 'Oui : contrats d’entretien pour plusieurs logements ou locaux, interventions planifiées avant la saison et délais définis au contrat. Indiquez simplement votre profil dans le formulaire.' },
+  { q: 'Où intervenez-vous ?', a: 'Basés à Hyères, nous intervenons partout dans le Var. Plus loin ? Sur demande, nous étudions chaque projet.' },
+];
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+const atouts = [
+  ['doc', 'Devis gratuit', 'Écrit, détaillé, sans engagement'],
+  ['shield', 'Prix ferme', 'Le prix du devis est celui facturé'],
+  ['clock', 'Réponse en 24 h', 'Sur chaque demande, jours ouvrés'],
+  ['pin', 'Tout le Var', 'Basés à Hyères, on se déplace'],
+] as const;
+const engagements = [
+  ['user', 'Un seul interlocuteur', 'Le même contact du premier appel à la mise en service. Pas de plateforme, pas de relais.'],
+  ['target', 'Le bon équipement', 'Puissance calculée pour votre logement. Nous vous déconseillons ce qui ne vous sert à rien.'],
+  ['clock', 'Réactifs', 'Réponse sous 24 h ouvrées, rendez-vous fixé et respecté.'],
+  ['pin', 'Proches de chez vous', 'Une équipe du Var : bord de mer, copropriétés, résidences secondaires, nous connaissons le terrain.'],
+] as const;
+const prestations = [
+  ['ac', 'Installation', 'Clim mono ou multisplit, PAC air-air ou air-eau.'],
+  ['shield', 'Entretien', `Formules annuelles dès ${Math.min(...formules.map((f) => f.prix))} € TTC.`],
+  ['wrench', 'Dépannage', 'Diagnostic sur place, prix annoncé avant.'],
+  ['swap', 'Remplacement', 'Ancien appareil déposé, fluides récupérés.'],
+] as const;
+const pros = [
+  ['calendar', 'Contrats d’entretien', 'Visites planifiées pour un parc de logements ou de locaux, avant la saison chaude.'],
+  ['bell', 'Astreinte et priorité', 'Délais d’intervention définis au contrat pour vos locataires et résidents.'],
+  ['user', 'Interlocuteur unique', 'Un contact direct, des comptes rendus après chaque passage, une facturation claire.'],
+] as const;
+---
+<Layout
+  title="La Cigale Énergie | Énergie & confort de l’habitat à Hyères et dans le Var"
+  description="La Cigale Énergie, basée à Hyères : énergie et confort de l’habitat dans tout le Var. Climatisation et pompe à chaleur dès maintenant, électricité, solaire, chauffage et plomberie bientôt. Devis gratuit, prix ferme, réponse sous 24 h ouvrées."
+  jsonld={[faqLd]}
+>
+  <!-- HERO -->
+  <section class="hero-dark">
+    <div class="container-site grid items-center gap-14 pb-20 pt-12 md:grid-cols-[1.15fr_1fr] md:pb-28 md:pt-20">
+      <div>
+        <p class="eyebrow inline-flex items-center gap-2"><Icon name="pin" size={16} /> Basés à {site.city} · {site.region}</p>
+        <h1 class="mt-4 text-[clamp(2.6rem,9.5vw,4.4rem)] uppercase">
+          Énergie & confort de l’habitat,<br /><span class="text-accent">près de chez vous.</span>
+        </h1>
+        <p class="mt-6 max-w-xl text-lg text-paper/80 md:text-xl">
+          Climatisation, pompe à chaleur, électricité, solaire, chauffage, plomberie : un seul interlocuteur pour l’énergie de votre logement. Un devis écrit, un prix annoncé, un chantier propre.
+        </p>
+        <div class="mt-6 inline-flex flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl border border-paper/15 bg-paper/5 px-4 py-3 text-sm">
+          <span class="inline-flex items-center gap-2 font-semibold text-paper"><span class="h-2 w-2 rounded-full bg-accent"></span> Disponible maintenant : {actifs.map((s) => s.name).join(', ')}</span>
+          {bientot.length > 0 && <span class="text-paper/60">Bientôt : {listeBientot}.</span>}
+        </div>
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+          <a href="#devis" class="btn btn-primary text-lg" data-track="CTA devis" data-place="hero">Demander un devis gratuit <Icon name="arrow" /></a>
+          <a href={`tel:${site.phone.tel}`} class="btn btn-light text-lg" data-track="Appel" data-place="hero"><Icon name="phone" /> <span class="sr-only">Appeler le</span> {site.phone.display}</a>
+        </div>
+      </div>
+      <EnergyVisual />
+    </div>
+  </section>
+
+  <!-- ATOUTS -->
+  <section aria-label="En bref" class="relative z-10 -mt-10">
+    <div class="container-site">
+      <ul class="grid grid-cols-2 gap-3 rounded-3xl border border-line bg-white p-3 shadow-[0_20px_50px_-30px_rgba(16,36,58,.45)] md:grid-cols-4 md:gap-0 md:p-2">
+        {atouts.map(([i, t, d], k) => (
+          <li class:list={['flex flex-col gap-2 rounded-2xl p-4 md:flex-row md:items-center md:gap-4 md:p-5', k > 0 && 'md:rounded-none md:border-l md:border-line']}>
+            <span class="chip-icon shrink-0"><Icon name={i} size={22} /></span>
+            <span class="leading-tight">
+              <span class="block font-display text-xl font-bold uppercase">{t}</span>
+              <span class="block text-sm text-muted">{d}</span>
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="section" aria-labelledby="services-titre">
+    <div class="container-site">
+      <div class="reveal">
+        <p class="eyebrow">Nos domaines</p>
+        <h2 id="services-titre" class="h2 uppercase">Ce que nous faisons pour votre logement</h2>
+      </div>
+
+      {actifs.map((s) => (
+        <article class="reveal mt-10 overflow-hidden rounded-[1.75rem] bg-ink text-paper md:grid md:grid-cols-[1.1fr_1fr]">
+          <div class="p-7 md:p-12">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-accent text-ink"><Icon name={s.icon} size={26} /></span>
+              <span class="text-sm font-semibold uppercase tracking-wider text-sun">{s.short}</span>
+            </div>
+            <h3 class="mt-5 text-[clamp(2rem,6vw,3rem)] uppercase">{s.name}</h3>
+            <p class="mt-3 max-w-md text-lg font-medium">Frais l’été, chaud l’hiver, avec un seul équipement bien dimensionné.</p>
+            <p class="mt-2 max-w-md text-paper/75">Climatisation mono et multisplit, pompe à chaleur air-air réversible et air-eau : pose, entretien, dépannage, remplacement.</p>
+            <a href={s.href} class="btn btn-primary mt-8">Découvrir <Icon name="arrow" size={18} /></a>
+          </div>
+          <ul class="grid grid-cols-2 gap-px bg-paper/10">
+            {prestations.map(([i, t, d]) => (
+              <li class="bg-ink p-6 md:p-8">
+                <Icon name={i} size={28} class="text-accent" />
+                <p class="mt-3 font-display text-2xl font-bold uppercase">{t}</p>
+                <p class="mt-1 text-sm text-paper/70">{d}</p>
+              </li>
+            ))}
+          </ul>
+        </article>
+      ))}
+
+      {bientot.length > 0 && (
+        <div class="reveal mt-8">
+          <div>
+            <h3 class="font-sans text-base font-semibold text-muted">Bientôt disponible</h3>
+            <ul class="mt-3 grid gap-3 sm:grid-cols-3">
+              {bientot.map((s) => (
+                <li class="flex items-center gap-3 rounded-2xl border border-dashed border-line bg-white/60 p-4" aria-disabled="true">
+                  <span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-line text-muted"><Icon name={s.icon} size={22} /></span>
+                  <span class="leading-tight">
+                    <span class="block font-display text-lg font-bold uppercase">{s.name}</span>
+                    <span class="block text-xs font-semibold text-muted">{s.short} · Bientôt</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <Realisations />
+
+  <!-- ENGAGEMENTS -->
+  <section class="section hero-dark" aria-labelledby="engagements-titre">
+    <div class="container-site">
+      <div class="reveal max-w-2xl">
+        <p class="eyebrow">Nos engagements</p>
+        <h2 id="engagements-titre" class="h2 uppercase">Simple, clair, bien fait</h2>
+      </div>
+      <ul class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {engagements.map(([i, t, d]) => (
+          <li class="glass reveal p-6">
+            <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-accent text-ink"><Icon name={i} size={24} /></span>
+            <h3 class="mt-5 text-2xl uppercase">{t}</h3>
+            <p class="mt-2 text-paper/75">{d}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <Etapes />
+
+  <!-- ZONE -->
+  <section id="zone" class="section" aria-labelledby="zone-titre">
+    <div class="container-site grid items-center gap-10 md:grid-cols-[1fr_1.2fr]">
+      <div class="reveal">
+        <p class="eyebrow">Zone d’intervention</p>
+        <h2 id="zone-titre" class="h2 uppercase">Partout dans le {site.region}</h2>
+        <p class="mt-4 text-lg text-muted">Basés à {site.city}, nous intervenons partout dans le {site.region}. Une équipe proche, des déplacements courts et une bonne connaissance du terrain : bord de mer, copropriétés, résidences secondaires.</p>
+        <ul class="mt-6 flex flex-wrap gap-2">
+          {site.zone.map((c) => <li class="rounded-full border border-line bg-white px-4 py-2 font-medium">{c}</li>)}
+        </ul>
+        <p class="mt-4 text-muted">Plus loin ? Sur demande, nous étudions chaque projet.</p>
+        <a href="#devis" class="btn btn-primary mt-6">Nous parler de votre projet <Icon name="arrow" size={18} /></a>
+      </div>
+      <div class="reveal" aria-hidden="true">
+        <svg viewBox="0 0 480 300" class="h-auto w-full">
+          <rect width="480" height="300" rx="28" fill="var(--accent-soft)" />
+          <path d="M0 210c60-10 90 20 150 10s80-40 140-30 90 40 190 20V300H0z" fill="var(--accent)" opacity=".35" />
+          <path d="M0 236c70-6 110 18 170 8s90-30 150-22 100 30 160 16V300H0z" fill="var(--accent)" opacity=".5" />
+          <path d="M40 60c40-20 120-30 200-20s150 10 200 40c10 40-10 80-50 100-60 20-110 0-160 10s-120 20-170-10C40 150 20 100 40 60z" fill="white" stroke="var(--ink)" stroke-width="2" stroke-dasharray="6 6" />
+          <path d="M215 200c10 18 6 34-4 44" stroke="var(--ink)" stroke-width="2" fill="none" />
+          <ellipse cx="238" cy="258" rx="40" ry="8" fill="white" opacity=".9" />
+          <circle cx="220" cy="170" r="26" fill="var(--accent)" opacity=".25" />
+          <circle cx="220" cy="170" r="9" fill="var(--ink)" />
+          <text x="236" y="164" font-family="Barlow Condensed, sans-serif" font-weight="700" font-size="22" fill="var(--ink)">HYÈRES</text>
+          <g font-family="Barlow, sans-serif" font-size="13" fill="var(--muted)">
+            <circle cx="140" cy="150" r="4" fill="var(--ink)" /><text x="104" y="140">Toulon</text>
+            <circle cx="300" cy="150" r="4" fill="var(--ink)" /><text x="290" y="140">La Londe</text>
+            <circle cx="180" cy="190" r="4" fill="var(--ink)" /><text x="96" y="196">Carqueiranne</text>
+            <circle cx="200" cy="110" r="4" fill="var(--ink)" /><text x="180" y="100">La Crau</text>
+            <circle cx="232" cy="250" r="4" fill="var(--ink)" /><text x="250" y="254">Giens</text>
+          </g>
+          <circle cx="420" cy="52" r="16" fill="var(--sun)" />
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROS -->
+  <section id="pros" class="section bg-white" aria-labelledby="pros-titre">
+    <div class="container-site">
+      <div class="reveal grid items-end gap-8 md:grid-cols-[1.3fr_1fr]">
+        <div>
+          <p class="eyebrow">Pros, agences et syndics</p>
+          <h2 id="pros-titre" class="h2 uppercase">Un partenaire fiable pour vos biens</h2>
+          <p class="mt-4 max-w-xl text-lg text-muted">Locations saisonnières, résidences secondaires, copropriétés, locaux professionnels : nous organisons l’entretien et les interventions pour que vous n’ayez pas à y penser.</p>
+        </div>
+        <div>
+          <p class="font-semibold">Vous êtes :</p>
+          <div class="mt-3 flex flex-col gap-2">
+            {[['agence', 'Agence / conciergerie'], ['syndic', 'Syndic / copropriété'], ['professionnel', 'Artisan / professionnel']].map(([v, l]) => (
+              <a href={`/?demandeur=${v}#devis`} data-demandeur={v} class="card card-hover flex items-center justify-between px-5 py-3.5 font-semibold">{l} <Icon name="arrow" size={18} class="text-accent-strong" /></a>
+            ))}
+          </div>
+        </div>
+      </div>
+      <ul class="mt-10 grid gap-4 md:grid-cols-3">
+        {pros.map(([i, t, d]) => (
+          <li class="reveal rounded-2xl bg-[linear-gradient(135deg,var(--accent-soft),white_70%)] p-6 ring-1 ring-line">
+            <span class="chip-icon"><Icon name={i} size={22} /></span>
+            <h3 class="mt-4 text-2xl uppercase">{t}</h3>
+            <p class="mt-2 text-muted">{d}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="section" aria-labelledby="faq-titre">
+    <div class="container-site grid gap-10 md:grid-cols-[1fr_1.6fr]">
+      <div class="reveal">
+        <p class="eyebrow">Questions fréquentes</p>
+        <h2 id="faq-titre" class="h2 uppercase">Vos questions, nos réponses</h2>
+        <p class="mt-4 text-muted">Une autre question ? <a href={`mailto:${site.email}`} class="font-semibold text-accent-strong underline">Écrivez-nous</a>.</p>
+      </div>
+      <div class="reveal -mt-10"><Faq items={faq} /></div>
+    </div>
+  </section>
+
+  <DevisForm />
+</Layout>

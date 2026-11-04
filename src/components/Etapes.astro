@@ -1,0 +1,26 @@
+---
+// Les 3 étapes, partagées entre l'accueil et la page climatisation.
+const etapes = [
+  ['1', 'Vous nous contactez', 'Par le formulaire, par téléphone ou WhatsApp. Nous vous répondons sous 24 h ouvrées.'],
+  ['2', 'Devis écrit, prix annoncé', 'Après une visite ou l’étude de vos photos, vous recevez un devis détaillé avec un prix ferme. Pas de surprise.'],
+  ['3', 'Travaux propres, facture claire', 'Intervention à la date convenue, chantier protégé et nettoyé, explications et facture conforme au devis.'],
+];
+---
+<section class="section bg-white" aria-labelledby="etapes-titre">
+  <div class="container-site">
+    <div class="reveal text-center">
+      <p class="eyebrow">Comment ça se passe</p>
+      <h2 id="etapes-titre" class="h2 uppercase">Trois étapes, sans détour</h2>
+    </div>
+    <ol class="relative mt-14 grid gap-10 md:grid-cols-3 md:gap-6">
+      <span class="absolute left-[16.6%] right-[16.6%] top-7 hidden h-0.5 bg-[repeating-linear-gradient(90deg,var(--accent)_0_10px,transparent_10px_18px)] md:block" aria-hidden="true"></span>
+      {etapes.map(([n, t, d]) => (
+        <li class="reveal relative text-center">
+          <span class="relative mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full bg-ink font-display text-3xl font-bold text-accent ring-8 ring-white">{n}</span>
+          <h3 class="mt-5 text-2xl uppercase">{t}</h3>
+          <p class="mx-auto mt-2 max-w-xs text-muted">{d}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

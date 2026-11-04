@@ -1,0 +1,58 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { site } from '../config/site';
+const links = [
+  { href: '/#services', label: 'Services' },
+  { href: '/#realisations', label: 'Réalisations' },
+  { href: '/#pros', label: 'Pros' },
+  { href: '/#zone', label: 'Zone' },
+  { href: '/#faq', label: 'FAQ' },
+];
+---
+<header class="sticky top-0 z-50 border-b border-line bg-paper/95 backdrop-blur supports-[backdrop-filter]:bg-paper/85">
+  <div class="container-site flex h-16 items-center justify-between gap-4 lg:h-[4.5rem]">
+    <a href="/" class="rounded-md" aria-label={`${site.name}, retour à l’accueil`}>
+      <Logo />
+    </a>
+    <nav aria-label="Navigation principale" class="hidden lg:block">
+      <ul class="flex items-center gap-6 font-medium xl:gap-8">
+        {links.map((l) => (
+          <li><a href={l.href} class="rounded py-2 hover:text-accent-strong">{l.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <div class="flex items-center gap-2">
+      <a href={`tel:${site.phone.tel}`} class="btn btn-ghost hidden !min-h-11 !px-4 xl:inline-flex" data-track="Appel" data-place="header">
+        <Icon name="phone" size={18} /> <span>{site.phone.display}</span>
+      </a>
+      <a href="/#devis" class="btn btn-primary hidden !min-h-11 whitespace-nowrap lg:inline-flex" data-track="CTA devis" data-place="header">Devis gratuit</a>
+
+      <!-- Mobile : appel direct + menu sans JavaScript -->
+      <a href={`tel:${site.phone.tel}`} class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-accent text-ink lg:hidden" aria-label={`Appeler le ${site.phone.display}`} data-track="Appel" data-place="header-mobile">
+        <Icon name="phone" />
+      </a>
+      <details class="group relative lg:hidden">
+        <summary class="flex h-11 w-11 cursor-pointer list-none items-center justify-center rounded-full border border-line [&::-webkit-details-marker]:hidden" aria-label="Menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+        </summary>
+        <nav aria-label="Navigation mobile" class="absolute right-0 top-[calc(100%+0.5rem)] w-56 rounded-2xl border border-line bg-white p-2 shadow-lg">
+          <ul>
+            {links.map((l) => (
+              <li><a href={l.href} class="block rounded-lg px-4 py-3 font-medium hover:bg-paper">{l.label}</a></li>
+            ))}
+            <li><a href="/#devis" class="mt-1 block rounded-lg bg-accent px-4 py-3 font-semibold">Devis gratuit</a></li>
+          </ul>
+        </nav>
+      </details>
+    </div>
+  </div>
+</header>
+
+<script>
+  document.querySelectorAll('header details').forEach((d) =>
+    d.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) (d as HTMLDetailsElement).open = false;
+    }),
+  );
+</script>

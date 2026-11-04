@@ -1,0 +1,171 @@
+---
+import Icon from './Icon.astro';
+import { site, whatsappUrl } from '../config/site';
+import { services } from '../config/services';
+const domaine = services.filter((s) => s.enabled).map((s) => s.name.toLowerCase()).join(', ').replace(' & ', ' et ');
+const besoins = ['Installation', 'Entretien', 'Dépannage', 'Remplacement'];
+const demandeurs = [
+  ['particulier', 'Particulier'],
+  ['professionnel', 'Professionnel / artisan'],
+  ['agence', 'Agence ou conciergerie'],
+  ['syndic', 'Syndic / copropriété'],
+];
+const req = '<span class="text-[#b42318]" aria-hidden="true">*</span>';
+---
+<section id="devis" class="section hero-dark" aria-labelledby="devis-titre">
+  <div class="container-site grid gap-10 md:grid-cols-[1fr_1.4fr]">
+    <div>
+      <p class="eyebrow">Devis gratuit</p>
+      <h2 id="devis-titre" class="h2 uppercase">Parlez-nous de votre projet</h2>
+      <p class="mt-4 text-lg text-paper/80">Une minute suffit. Nous vous rappelons ou vous répondons par écrit sous 24 h ouvrées.</p>
+      <ul class="mt-6 space-y-3 font-medium">
+        <li class="flex items-center gap-3"><Icon name="check" class="text-accent" /> Gratuit et sans engagement</li>
+        <li class="flex items-center gap-3"><Icon name="check" class="text-accent" /> Photos par WhatsApp pour aller plus vite</li>
+        <li class="flex items-center gap-3"><Icon name="check" class="text-accent" /> Prix ferme annoncé avant le chantier</li>
+      </ul>
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row md:flex-col lg:flex-row">
+        <a href={`tel:${site.phone.tel}`} class="btn btn-light" data-track="Appel" data-place="devis"><Icon name="phone" /> {site.phone.display}</a>
+        <a href={whatsappUrl} class="btn btn-light" target="_blank" rel="noopener" data-track="WhatsApp" data-place="devis"><Icon name="whatsapp" /> WhatsApp</a>
+      </div>
+    </div>
+
+    <div class="card p-5 text-ink shadow-2xl md:p-8">
+      <form id="devis-form" action="/api/devis" method="post" class="grid gap-4" novalidate>
+        <p class="text-sm text-muted">Les champs marqués d’un astérisque <span class="text-[#b42318]">*</span> sont obligatoires.</p>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label for="nom" class="label">Nom <Fragment set:html={req} /></label>
+            <input id="nom" name="nom" class="field" autocomplete="name" required />
+            <p class="error" data-error-for="nom"></p>
+          </div>
+          <div>
+            <label for="telephone" class="label">Téléphone <Fragment set:html={req} /></label>
+            <input id="telephone" name="telephone" type="tel" class="field" autocomplete="tel" inputmode="tel" required />
+            <p class="error" data-error-for="telephone"></p>
+          </div>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label for="email" class="label">Email <Fragment set:html={req} /></label>
+            <input id="email" name="email" type="email" class="field" autocomplete="email" required />
+            <p class="error" data-error-for="email"></p>
+          </div>
+          <div>
+            <label for="commune" class="label">Commune <Fragment set:html={req} /></label>
+            <input id="commune" name="commune" class="field" autocomplete="address-level2" required />
+            <p class="error" data-error-for="commune"></p>
+          </div>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label for="besoin" class="label">Type de demande <span class="font-normal text-muted">({domaine})</span> <Fragment set:html={req} /></label>
+            <select id="besoin" name="besoin" class="field" required>
+              <option value="">Choisir…</option>
+              {besoins.map((b) => <option value={b}>{b}</option>)}
+            </select>
+            <p class="error" data-error-for="besoin"></p>
+          </div>
+          <div>
+            <label for="demandeur" class="label">Vous êtes <Fragment set:html={req} /></label>
+            <select id="demandeur" name="demandeur" class="field" required>
+              {demandeurs.map(([v, l]) => <option value={v}>{l}</option>)}
+            </select>
+          </div>
+        </div>
+        <div>
+          <label for="message" class="label">Message <span class="font-normal text-muted">(facultatif)</span></label>
+          <textarea id="message" name="message" rows="4" class="field" placeholder="Pièces concernées, surface, appareil existant, délai souhaité…"></textarea>
+        </div>
+
+        <!-- Anti-spam : ce champ doit rester vide -->
+        <div class="hidden" aria-hidden="true">
+          <label>Ne pas remplir ce champ <input name="site_web" tabindex="-1" autocomplete="off" /></label>
+        </div>
+
+        <div>
+          <label class="flex items-start gap-3 text-sm">
+            <input type="checkbox" name="consentement" class="mt-1 h-5 w-5 shrink-0 accent-[var(--accent-strong)]" required />
+            <span>J’accepte que mes données soient utilisées pour répondre à ma demande, conformément à la <a href="/confidentialite" class="underline">politique de confidentialité</a>. <Fragment set:html={req} /></span>
+          </label>
+          <p class="error" data-error-for="consentement"></p>
+        </div>
+
+        <button type="submit" class="btn btn-primary text-lg" data-track="Envoi devis" data-place="formulaire">Envoyer ma demande</button>
+        <p role="status" class="font-semibold empty:hidden" data-status></p>
+      </form>
+
+      <div id="devis-ok" class="hidden py-8 text-center" tabindex="-1">
+        <span class="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-accent text-ink"><Icon name="check" size={34} /></span>
+        <h3 class="mt-5 text-3xl uppercase">Demande bien reçue</h3>
+        <p class="mt-2 text-muted">Merci. Nous revenons vers vous sous 24 h ouvrées. Pour une urgence, appelez-nous au <a href={`tel:${site.phone.tel}`} class="font-semibold text-ink underline">{site.phone.display}</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('#devis-form');
+  if (form) {
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const besoin = form.elements.namedItem('besoin') as HTMLSelectElement;
+    const demandeur = form.elements.namedItem('demandeur') as HTMLSelectElement;
+    const setError = (name: string, msg: string) => {
+      const el = form.querySelector<HTMLElement>(`[data-error-for="${name}"]`);
+      const input = form.elements.namedItem(name) as HTMLInputElement | null;
+      if (el) el.textContent = msg;
+      input?.setAttribute('aria-invalid', msg ? 'true' : 'false');
+    };
+    const choose = (sel: HTMLSelectElement, v: string | null | undefined) => {
+      if (v && [...sel.options].some((o) => o.value === v)) sel.value = v;
+    };
+
+    // Pré-remplissage : via l'adresse (?demandeur=syndic&besoin=Entretien#devis) ou un lien data-besoin / data-demandeur
+    const q = new URLSearchParams(location.search);
+    choose(demandeur, q.get('demandeur'));
+    choose(besoin, q.get('besoin'));
+    document.addEventListener('click', (e) => {
+      const a = (e.target as HTMLElement).closest<HTMLElement>('[data-besoin],[data-demandeur]');
+      if (!a) return;
+      choose(besoin, a.dataset.besoin);
+      choose(demandeur, a.dataset.demandeur);
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
+      let ok = true;
+      const rules: [string, boolean, string][] = [
+        ['nom', !!data.nom?.trim(), 'Indiquez votre nom.'],
+        ['telephone', /^[+0-9 .()-]{8,}$/.test(data.telephone?.trim() ?? ''), 'Indiquez un numéro de téléphone valide.'],
+        ['email', /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email?.trim() ?? ''), 'Indiquez une adresse email valide.'],
+        ['commune', !!data.commune?.trim(), 'Indiquez votre commune.'],
+        ['besoin', !!data.besoin, 'Choisissez le type de demande.'],
+        ['consentement', !!data.consentement, 'Merci de cocher la case pour continuer.'],
+      ];
+      for (const [name, valid, msg] of rules) {
+        setError(name, valid ? '' : msg);
+        if (!valid) ok = false;
+      }
+      if (!ok) {
+        (form.querySelector('[aria-invalid="true"]') as HTMLElement | null)?.focus();
+        return;
+      }
+      status.textContent = 'Envoi en cours…';
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(data),
+        });
+        if (!res.ok) throw new Error();
+        form.reset();
+        form.classList.add('hidden');
+        const done = document.getElementById('devis-ok')!;
+        done.classList.remove('hidden');
+        done.focus();
+      } catch {
+        status.textContent = 'L’envoi a échoué. Réessayez, ou appelez-nous.';
+      }
+    });
+  }
+</script>

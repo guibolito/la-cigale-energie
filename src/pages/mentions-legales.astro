@@ -1,0 +1,41 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { site } from '../config/site';
+// Toutes les informations se remplissent dans src/config/site.ts (section legal + address).
+const l = site.legal;
+const nom = l.company || site.name;
+const todo = (v: string, label: string) => v || `[${label}]`;
+---
+<Layout title={`Mentions légales | ${site.name}`} description={`Mentions légales du site ${site.name}.`}>
+  <div class="container-site prose-legal max-w-3xl py-14 md:py-20">
+    <h1 class="text-[clamp(2.4rem,8vw,3.5rem)] uppercase">Mentions légales</h1>
+
+    <h2>Éditeur du site</h2>
+    <p>
+      {nom}{l.form && `, ${l.form}`}{l.capital && ` au capital de ${l.capital} €`}<br />
+      Siège social : {todo(site.address, 'adresse')}<br />
+      SIRET : {todo(l.siret, 'SIRET')}{l.rcs && ` – ${l.rcs}`}<br />
+      Téléphone : <a href={`tel:${site.phone.tel}`}>{site.phone.display}</a><br />
+      Email : <a href={`mailto:${site.email}`}>{site.email}</a>
+    </p>
+    <p>Directeur de la publication : {todo(l.publisher, 'Prénom Nom, gérant')}.</p>
+
+    <h2>Hébergement</h2>
+    <p>Cloudflare, Inc.<br />101 Townsend St, San Francisco, CA 94107, États-Unis<br /><a href="https://www.cloudflare.com" rel="noopener">www.cloudflare.com</a></p>
+
+    <h2>Médiation de la consommation</h2>
+    <p>
+      Conformément aux articles L.612-1 et suivants du Code de la consommation, en cas de litige non résolu avec nous, le client consommateur peut recourir gratuitement au médiateur de la consommation suivant :
+      {l.mediator.name ? (l.mediator.url ? <a href={l.mediator.url} rel="noopener">{l.mediator.name}</a> : l.mediator.name) : '[nom et site du médiateur de la consommation]'}.
+    </p>
+
+    <h2>Propriété intellectuelle</h2>
+    <p>Les textes, illustrations, logo et éléments graphiques de ce site sont la propriété de {nom}, sauf mention contraire. Toute reproduction sans autorisation est interdite.</p>
+
+    <h2>Responsabilité</h2>
+    <p>Les informations du site sont données à titre indicatif. Les prix affichés sont des tarifs « à partir de » : seul le devis écrit fait foi.</p>
+
+    <h2>Données personnelles</h2>
+    <p>Le traitement des données transmises via le site est décrit dans notre <a href="/confidentialite">politique de confidentialité</a>. Ce site ne dépose aucun cookie publicitaire ni traceur soumis à consentement.</p>
+  </div>
+</Layout>

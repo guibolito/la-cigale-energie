@@ -1,0 +1,63 @@
+---
+// Illustration du hero de l'accueil : une maison et les domaines d'énergie (statut lu dans config/services.ts).
+import Icon from './Icon.astro';
+import { services } from '../config/services';
+---
+<div class="relative mx-auto w-full max-w-md" aria-hidden="true">
+  <div class="glass relative p-6 md:p-7">
+    <svg viewBox="0 0 340 250" class="h-auto w-full">
+      <!-- soleil -->
+      <g class="floaty">
+        <circle cx="292" cy="44" r="20" fill="var(--sun)" />
+        <g stroke="var(--sun)" stroke-width="3" stroke-linecap="round">
+          <path d="M292 12v-6M292 82v-6M260 44h-6M330 44h-6M269 21l-4-4M319 71l-4-4M269 67l-4 4M319 17l-4 4" />
+        </g>
+      </g>
+      <!-- sol -->
+      <path d="M10 226h320" stroke="var(--paper)" stroke-opacity=".35" stroke-width="2" stroke-linecap="round" />
+      <!-- maison -->
+      <path d="M50 120 150 48l100 72v106H50z" fill="var(--paper)" />
+      <path d="M36 128 150 44l114 84" fill="none" stroke="var(--accent)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+      <!-- panneaux solaires -->
+      <g fill="var(--ink)" stroke="var(--accent)" stroke-width="1.5">
+        <path d="M160 64l22 16-14 10-22-16z" />
+        <path d="M186 83l22 16-14 10-22-16z" />
+      </g>
+      <!-- clim murale -->
+      <rect x="68" y="134" width="62" height="20" rx="6" fill="#fff" stroke="var(--ink)" stroke-width="2" />
+      <g class="airflow" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round">
+        <path d="M82 160c-2 8-6 14-10 20" />
+        <path d="M99 160v22" />
+        <path d="M116 160c2 8 6 14 10 20" />
+      </g>
+      <!-- radiateur -->
+      <g fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round">
+        <rect x="160" y="176" width="58" height="34" rx="5" fill="#fff" />
+        <path d="M172 182v22M184 182v22M196 182v22M208 182v22" />
+      </g>
+      <path d="M182 168c-4-6 4-8 0-14M196 168c-4-6 4-8 0-14" stroke="var(--sun)" stroke-width="2.5" fill="none" stroke-linecap="round" />
+      <!-- robinet / eau -->
+      <path d="M78 196h22v-8h10" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M110 198c3 5 5 8 5 11a5 5 0 0 1-10 0c0-3 2-6 5-11z" fill="var(--accent)" />
+      <!-- borne de recharge -->
+      <g>
+        <rect x="270" y="168" width="26" height="58" rx="6" fill="var(--paper)" />
+        <rect x="276" y="176" width="14" height="12" rx="2" fill="var(--accent)" />
+        <path d="M284 196l-5 9h6l-4 9" fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M296 200c14 0 16 14 16 26" fill="none" stroke="var(--paper)" stroke-width="3" stroke-linecap="round" />
+      </g>
+    </svg>
+    <ul class="mt-4 grid grid-cols-2 gap-2">
+      {services.map((s) => (
+        <li class:list={['flex items-center gap-2 rounded-xl p-2.5 text-xs font-semibold leading-tight', s.enabled ? 'bg-accent text-ink' : 'bg-paper/10 text-paper/80']}>
+          <Icon name={s.icon} size={18} class="shrink-0" />
+          <span>{s.name}<span class="block font-normal opacity-80">{s.enabled ? 'Disponible' : 'Bientôt'}</span></span>
+        </li>
+      ))}
+    </ul>
+  </div>
+  <div class="floaty-2 absolute -left-6 -top-5 hidden items-center gap-2 rounded-2xl bg-paper px-4 py-3 text-ink shadow-xl sm:flex">
+    <span class="chip-icon !h-9 !w-9"><Icon name="user" size={18} /></span>
+    <span class="text-sm font-semibold leading-tight">Un seul<br /><span class="font-normal text-muted">interlocuteur</span></span>
+  </div>
+</div>

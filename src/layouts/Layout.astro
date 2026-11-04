@@ -1,0 +1,83 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MobileBar from '../components/MobileBar.astro';
+import { site, instagramUrl } from '../config/site';
+
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+  jsonld?: object[];
+}
+const { title, description, noindex = false, jsonld = [] } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL('/og.png', Astro.site).href;
+
+const entreprise = {
+  '@context': 'https://schema.org',
+  '@type': 'HVACBusiness',
+  '@id': new URL('/#entreprise', Astro.site).href,
+  name: site.name,
+  url: new URL('/', Astro.site).href,
+  logo: new URL('/favicon.svg', Astro.site).href,
+  telephone: site.phone.tel,
+  email: site.email,
+  address: { '@type': 'PostalAddress', addressLocality: site.city, postalCode: '83400', addressCountry: 'FR' },
+  areaServed: { '@type': 'AdministrativeArea', name: site.region },
+  sameAs: [instagramUrl],
+};
+---
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#10243A" />
+    <script is:inline>document.documentElement.classList.add('js')</script>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify(entreprise)} />
+    {jsonld.map((j) => <script type="application/ld+json" set:html={JSON.stringify(j)} />)}
+  </head>
+  <body class="pb-[4.5rem] md:pb-0">
+    <a href="#contenu" class="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[100] focus:rounded-lg focus:bg-ink focus:px-4 focus:py-2 focus:text-paper">Aller au contenu</a>
+    <Header />
+    <main id="contenu">
+      <slot />
+    </main>
+    <Footer />
+    <MobileBar />
+    <script>
+      // Apparition douce des blocs au défilement
+      const io = new IntersectionObserver(
+        (entries) => entries.forEach((en) => en.isIntersecting && (en.target.classList.add('is-in'), io.unobserve(en.target))),
+        { rootMargin: '0px 0px -8% 0px' },
+      );
+      document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+    </script>
+    <script>
+      // Suivi optionnel des clics (Plausible ou Umami si vous les ajoutez plus tard)
+      const w = window as any;
+      document.addEventListener('click', (e) => {
+        const t = (e.target as HTMLElement).closest('[data-track]') as HTMLElement | null;
+        if (t) {
+          w.plausible?.(t.dataset.track, { props: { emplacement: t.dataset.place ?? '' } });
+          w.umami?.track(t.dataset.track, { emplacement: t.dataset.place ?? '' });
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+---
+import Icon from './Icon.astro';
+import { site, whatsappUrl } from '../config/site';
+---
+<!-- Barre de contact fixe en bas sur mobile -->
+<nav aria-label="Contact rapide" class="fixed inset-x-0 bottom-0 z-50 border-t border-line bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
+  <ul class="grid grid-cols-3 text-sm font-semibold">
+    <li><a href={`tel:${site.phone.tel}`} class="flex h-16 flex-col items-center justify-center gap-1" data-track="Appel" data-place="barre"><Icon name="phone" size={22} />Appeler</a></li>
+    <li><a href={whatsappUrl} class="flex h-16 flex-col items-center justify-center gap-1" target="_blank" rel="noopener" data-track="WhatsApp" data-place="barre"><Icon name="whatsapp" size={22} />WhatsApp</a></li>
+    <li class="p-2"><a href="/#devis" class="flex h-12 items-center justify-center rounded-full bg-accent text-ink" data-track="CTA devis" data-place="barre">Devis gratuit</a></li>
+  </ul>
+</nav>

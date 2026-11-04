@@ -1,0 +1,42 @@
+---
+// Galerie « Nos réalisations ».
+// Pour ajouter une photo : déposez-la dans public/realisations/ et ajoutez une ligne dans `photos` ci-dessous,
+// ex. { src: '/realisations/clim-giens.jpg', alt: 'Clim murale posée dans un séjour à Giens' }.
+// Tant que la liste est vide, des emplacements « Photo de chantier à venir » s'affichent.
+import Icon from './Icon.astro';
+import { instagramUrl } from '../config/site';
+interface Props { titre?: string }
+const { titre = 'Le travail bien fait, en images' } = Astro.props;
+const photos: { src: string; alt: string }[] = [];
+// 4 cases affichées (les photos en trop ne s'affichent pas : mettez les meilleures en premier).
+const cases = (photos.length ? photos : Array.from({ length: 4 }, () => null)).slice(0, 4);
+---
+<section id="realisations" class="section" aria-labelledby="real-titre">
+  <div class="container-site">
+    <div class="reveal grid gap-4 md:grid-cols-[1fr_auto] md:items-end">
+      <div>
+        <p class="eyebrow">Nos réalisations</p>
+        <h2 id="real-titre" class="h2 uppercase">{titre}</h2>
+      </div>
+      <a href={instagramUrl} target="_blank" rel="noopener" class="btn btn-ghost" data-track="Instagram" data-place="realisations"><Icon name="instagram" /> Nos chantiers sur Instagram</a>
+    </div>
+    <ul class="reveal mt-10 grid grid-cols-2 gap-3 md:auto-rows-[14rem] md:grid-cols-6">
+      {cases.map((p, i) => (
+        <li class:list={['overflow-hidden rounded-2xl md:col-span-2 md:aspect-auto', i === 0 ? 'col-span-2 aspect-[4/3] md:row-span-2' : 'aspect-[4/3]', i === 3 && 'hidden md:block']}>
+          {p ? (
+            <img src={p.src} alt={p.alt} loading="lazy" class="h-full w-full object-cover transition duration-500 hover:scale-105" />
+          ) : (
+            <div class="flex h-full w-full flex-col items-center justify-center gap-2 border border-dashed border-line bg-[linear-gradient(135deg,var(--accent-soft),white)] p-4 text-center text-sm font-medium text-muted">
+              <Icon name="camera" size={28} class="text-accent-strong" />
+              Photo de chantier à venir
+            </div>
+          )}
+        </li>
+      ))}
+      <li class="col-span-2 flex flex-col items-start justify-center gap-4 rounded-2xl bg-ink p-6 text-paper md:col-span-2">
+        <p class="font-display text-2xl font-bold uppercase leading-tight">Le prochain chantier, c’est le vôtre ?</p>
+        <a href="#devis" class="btn btn-primary" data-track="CTA devis" data-place="realisations">Demander un devis gratuit <Icon name="arrow" size={18} /></a>
+      </li>
+    </ul>
+  </div>
+</section>

@@ -1,0 +1,42 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { site, instagramUrl, whatsappUrl } from '../config/site';
+import { services } from '../config/services';
+const l = site.legal;
+const legalLine = [l.company || site.name, l.form && (l.capital ? `${l.form} au capital de ${l.capital} €` : l.form), l.siret && `SIRET ${l.siret}`, l.rcs].filter(Boolean).join(' – ');
+---
+<footer class="bg-ink text-paper">
+  <div class="container-site grid gap-10 py-14 md:grid-cols-3">
+    <div>
+      <Logo variant="dark" />
+      <p class="mt-4 max-w-xs text-paper/80">
+        {site.tagline}. Basés à {site.city}, nous intervenons partout dans le {site.region}. {services.filter((s) => s.enabled).map((s) => s.name).join(', ')}.
+      </p>
+    </div>
+    <div>
+      <h2 class="font-display text-xl uppercase tracking-wide">Contact</h2>
+      <ul class="mt-4 space-y-3">
+        <li><a href={`tel:${site.phone.tel}`} class="inline-flex items-center gap-2 hover:underline" data-track="Appel" data-place="footer"><Icon name="phone" size={18} />{site.phone.display}</a></li>
+        <li><a href={whatsappUrl} class="inline-flex items-center gap-2 hover:underline" target="_blank" rel="noopener" data-track="WhatsApp" data-place="footer"><Icon name="whatsapp" size={18} />WhatsApp</a></li>
+        <li><a href={`mailto:${site.email}`} class="inline-flex items-center gap-2 break-all hover:underline"><Icon name="mail" size={18} />{site.email}</a></li>
+        <li><a href={instagramUrl} class="inline-flex items-center gap-2 hover:underline" target="_blank" rel="noopener"><Icon name="instagram" size={18} />@{site.instagram}</a></li>
+        {site.address && <li class="flex items-start gap-2 text-paper/80"><Icon name="pin" size={18} class="mt-1 shrink-0" />{site.address}</li>}
+        <li class="flex items-start gap-2 text-paper/80"><Icon name="clock" size={18} class="mt-1 shrink-0" />{site.hours}</li>
+      </ul>
+    </div>
+    <div>
+      <h2 class="font-display text-xl uppercase tracking-wide">Informations</h2>
+      <ul class="mt-4 space-y-3">
+        <li><a href="/climatisation-hyeres" class="hover:underline">Climatisation & pompe à chaleur à Hyères</a></li>
+        <li><a href="/#pros" class="hover:underline">Pros, agences et syndics</a></li>
+        <li><a href="/#realisations" class="hover:underline">Nos réalisations</a></li>
+        <li><a href="/mentions-legales" class="hover:underline">Mentions légales</a></li>
+        <li><a href="/confidentialite" class="hover:underline">Politique de confidentialité</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-paper/15">
+    <p class="container-site py-5 text-sm text-paper/70">© {new Date().getFullYear()} {legalLine}</p>
+  </div>
+</footer>
