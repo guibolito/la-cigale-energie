@@ -144,16 +144,15 @@ const crumbLd = {
     <div class="container-site">
       <div class="reveal">
         <p class="eyebrow">Entretien annuel</p>
-        <h2 id="entretien-titre" class="h2 uppercase">Trois formules, un prix clair</h2>
-        <p class="mt-3 max-w-2xl text-muted">Prix indicatifs à partir de, TTC par an, pour 1 split mural et son groupe extérieur à Hyères. Le prix exact dépend du nombre d’unités et de votre zone : il figure sur votre devis gratuit.</p>
+        <h2 id="entretien-titre" class="h2 uppercase">Trois formules, au choix</h2>
+        <p class="mt-3 max-w-2xl text-muted">Choisissez le niveau d’entretien qui vous convient. Le tarif dépend du nombre d’unités : il figure sur votre devis gratuit.</p>
       </div>
       <ul class="mt-12 grid gap-5 md:grid-cols-3">
         {formules.map((f) => (
           <li class:list={['card card-hover reveal relative flex flex-col p-6 md:p-8', f.vedette && 'border-2 !border-accent bg-ink text-paper md:-translate-y-3']}>
             {f.vedette && <span class="absolute -top-3 left-6 rounded-full bg-sun px-3 py-1 text-sm font-semibold text-ink">Le plus choisi</span>}
             <h3 class="text-3xl uppercase">{f.nom}</h3>
-            <p class:list={['mt-1', f.vedette ? 'text-paper/75' : 'text-muted']}>{f.accroche}</p>
-            <p class="mt-4 font-display text-5xl font-bold">{f.prix} €<span class:list={['ml-1 font-sans text-base font-medium', f.vedette ? 'text-paper/70' : 'text-muted']}> TTC / an</span></p>
+            <p class:list={['mt-1 mb-1', f.vedette ? 'text-paper/75' : 'text-muted']}>{f.accroche}</p>
             <ul class="mt-5 space-y-2">
               {f.inclus.map((i) => (
                 <li class="flex items-start gap-2"><Icon name="check" size={20} class={`mt-0.5 shrink-0 ${f.vedette ? 'text-accent' : 'text-accent-strong'}`} />{i}</li>

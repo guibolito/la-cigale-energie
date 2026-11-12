@@ -8,7 +8,6 @@ import Etapes from '../components/Etapes.astro';
 import Realisations from '../components/Realisations.astro';
 import { site } from '../config/site';
 import { services } from '../config/services';
-import { formules } from '../data/entretien';
 
 const actifs = services.filter((s) => s.enabled);
 const bientot = services.filter((s) => !s.enabled);
@@ -42,7 +41,7 @@ const engagements = [
 ] as const;
 const prestations = [
   ['ac', 'Installation', 'Clim mono ou multisplit, PAC air-air ou air-eau.'],
-  ['shield', 'Entretien', `Formules annuelles dès ${Math.min(...formules.map((f) => f.prix))} € TTC.`],
+  ['shield', 'Entretien', 'Visite ponctuelle ou contrat annuel.'],
   ['wrench', 'Dépannage', 'Diagnostic sur place, prix annoncé avant.'],
   ['swap', 'Remplacement', 'Ancien appareil déposé, fluides récupérés.'],
 ] as const;

@@ -9,7 +9,7 @@ Ouvrez ce dossier dans Claude Code (en ligne ou sur ordinateur) et décrivez ce 
 Où se trouvent les choses :
 - `src/config/site.ts` : nom, téléphone, email, Instagram, adresse, zone, mentions légales et médiateur (à compléter)
 - `src/config/services.ts` : services (passer `enabled` à `true` pour en ouvrir un)
-- `src/data/entretien.ts` : formules et prix d'entretien (à vérifier avant publication)
+- `src/data/entretien.ts` : formules d'entretien (aucun prix affiché)
 - `src/components/Realisations.astro` : photos de chantiers (déposer les photos dans `public/realisations/`)
 - `src/pages/` : les pages
 - `src/components/EnergyVisual.astro` : illustration en haut de l’accueil (maison + domaines)
@@ -29,7 +29,7 @@ Où se trouvent les choses :
 ## Avant de publier
 - Remplacer téléphone, email, Instagram, WhatsApp dans `src/config/site.ts`.
 - Compléter l’adresse et les mentions légales (SIRET, capital, gérant, médiateur de la consommation) dans le même fichier : tant qu’un champ est vide, la page Mentions légales affiche [à compléter].
-- Vérifier les prix d'entretien et l'adresse du site (`site` dans `astro.config.mjs`, et `robots.txt`).
+- Vérifier l'adresse du site (`site` dans `astro.config.mjs`, et `robots.txt`).
 
 ## En local
 `npm install` puis `npm run dev`.
