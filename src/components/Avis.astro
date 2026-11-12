@@ -1,0 +1,108 @@
+---
+// Mur d'avis Google qui défile (données dans src/data/avis.ts). Ne s'affiche pas tant qu'il n'y a aucun avis.
+import Icon from './Icon.astro';
+import { avis, ficheGoogle, type Avis } from '../data/avis';
+
+const liste = avis.filter((a) => a.nom && a.texte);
+const nombre = ficheGoogle.nombre ?? liste.length;
+const note = ficheGoogle.note ?? (liste.length ? liste.reduce((t, a) => t + a.note, 0) / liste.length : 0);
+const noteTexte = note.toLocaleString('fr-FR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+
+// Répète les avis pour que chaque colonne soit assez longue, puis la double pour une boucle sans à-coup.
+const remplir = (items: Avis[], min: number) => {
+  if (!items.length) return [];
+  const out: Avis[] = [];
+  while (out.length < min) out.push(...items);
+  return out;
+};
+const col1 = liste.filter((_, i) => i % 2 === 0);
+const col2 = liste.filter((_, i) => i % 2 === 1);
+const colonnes = [
+  { base: liste, min: 6, classe: 'md:hidden', duree: Math.max(30, liste.length * 9) },
+  { base: col1.length ? col1 : liste, min: 4, classe: 'hidden md:block', duree: Math.max(30, col1.length * 12) },
+  { base: col2.length ? col2 : liste, min: 4, classe: 'hidden md:block', duree: Math.max(36, col2.length * 13), inverse: true },
+].map((c) => ({ ...c, items: remplir(c.base, c.min) }));
+const initiales = (n: string) => n.split(/\s+/).map((p) => p[0]).join('').slice(0, 2).toUpperCase();
+---
+{liste.length > 0 && (
+  <section id="avis" class="section bg-white" aria-labelledby="avis-titre">
+    <div class="container-site">
+      <div class="reveal text-center">
+        <p class="eyebrow">Avis clients</p>
+        <h2 id="avis-titre" class="h2 uppercase">Ils en parlent mieux que nous</h2>
+        <a href={ficheGoogle.lien || undefined} target="_blank" rel="noopener" class="mt-5 inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2 text-sm shadow-sm hover:border-accent" data-track="Avis Google" data-place="badge">
+          <Icon name="star" size={18} class="text-sun" />
+          <b class="text-base">{noteTexte}</b> sur {nombre} avis Google
+          {ficheGoogle.lien && <Icon name="external" size={14} class="text-muted" />}
+        </a>
+      </div>
+
+      <div class="avis-wall reveal mt-10 grid gap-5 md:grid-cols-2">
+        {colonnes.map((c) => (
+          <div class={`avis-col ${c.classe}`}>
+            <ul class:list={['avis-track', c.inverse && 'avis-track--inverse']} style={`--duree:${c.duree}s`}>
+              {[...c.items, ...c.items].map((a, i) => (
+                <li class="pb-5" aria-hidden={i >= c.base.length ? 'true' : undefined}>
+                  <figure class="card flex flex-col gap-4 p-6 shadow-[0_10px_30px_-22px_rgba(16,36,58,.5)]">
+                    <div class="flex items-center justify-between">
+                      <span class="flex text-sun" role="img" aria-label={`${a.note} étoiles sur 5`}>
+                        {Array.from({ length: 5 }, (_, k) => <Icon name="star" size={18} class={k < a.note ? '' : 'opacity-25'} />)}
+                      </span>
+                      <span class="font-display text-4xl leading-none text-accent-soft" aria-hidden="true">”</span>
+                    </div>
+                    <blockquote class="text-[1.02rem] leading-relaxed">« {a.texte} »</blockquote>
+                    <figcaption class="flex items-center gap-3">
+                      {a.photo
+                        ? <img src={a.photo} alt="" width="40" height="40" loading="lazy" class="h-10 w-10 shrink-0 rounded-full object-cover" referrerpolicy="no-referrer" />
+                        : <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent text-sm font-bold text-ink">{initiales(a.nom)}</span>}
+                      <span class="min-w-0 flex-1 leading-tight">
+                        <b class="block">{a.nom}</b>
+                        {a.date && <span class="text-sm text-muted">{a.date}</span>}
+                      </span>
+                      <span class="inline-flex shrink-0 items-center gap-1 rounded-md border border-line px-2 py-1 text-xs font-semibold">
+                        <Icon name="google" size={14} /> Google
+                      </span>
+                    </figcaption>
+                  </figure>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      {ficheGoogle.lien && (
+        <div class="mt-8 text-center">
+          <a href={ficheGoogle.lien} target="_blank" rel="noopener" class="btn btn-ghost" data-track="Avis Google" data-place="bouton">Voir tous nos avis sur Google <Icon name="external" size={16} /></a>
+        </div>
+      )}
+    </div>
+  </section>
+)}
+
+<style>
+  .avis-wall {
+    height: 40rem;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent);
+  }
+  .avis-track {
+    animation: avis-defile var(--duree, 40s) linear infinite;
+  }
+  .avis-track--inverse {
+    animation-direction: reverse;
+  }
+  .avis-wall:hover .avis-track,
+  .avis-wall:focus-within .avis-track {
+    animation-play-state: paused;
+  }
+  @keyframes avis-defile {
+    from { transform: translateY(0); }
+    to { transform: translateY(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .avis-wall { height: auto; max-height: 40rem; overflow-y: auto; mask-image: none; -webkit-mask-image: none; }
+    .avis-track { animation: none; }
+  }
+</style>

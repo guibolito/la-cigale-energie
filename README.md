@@ -11,6 +11,7 @@ Où se trouvent les choses :
 - `src/config/services.ts` : services (passer `enabled` à `true` pour en ouvrir un)
 - `src/data/entretien.ts` : formules d'entretien (aucun prix affiché)
 - `src/components/Realisations.astro` : photos de chantiers (déposer les photos dans `public/realisations/`)
+- `src/data/avis.ts` : avis Google affichés sous les réalisations (section cachée tant que la liste est vide)
 - `src/pages/` : les pages
 - `src/components/EnergyVisual.astro` : illustration en haut de l’accueil (maison + domaines)
 - `src/components/HeroVisual.astro` : illustration clim animée en haut de la page climatisation

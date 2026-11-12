@@ -6,6 +6,8 @@ import DevisForm from '../components/DevisForm.astro';
 import EnergyVisual from '../components/EnergyVisual.astro';
 import Etapes from '../components/Etapes.astro';
 import Realisations from '../components/Realisations.astro';
+import Avis from '../components/Avis.astro';
+import VarMap from '../components/VarMap.astro';
 import { site } from '../config/site';
 import { services, afficherBientot, accueilGeneraliste } from '../config/services';
 import HeroVisual from '../components/HeroVisual.astro';
@@ -20,7 +22,6 @@ const faq = [
   { q: 'Quels travaux proposez-vous aujourd’hui ?', a: `Aujourd’hui : ${nomsActifs}.${bientot.length ? ` D’autres domaines ouvriront bientôt : ${listeBientot}.` : ''}` },
   { q: 'Sous quel délai répondez-vous ?', a: 'Nous répondons à chaque demande sous 24 h ouvrées. La date d’intervention est fixée avec vous et indiquée sur le devis.' },
   { q: 'Comment préparer ma demande ?', a: 'Indiquez votre commune, le type de logement et ce que vous souhaitez. Quelques photos de l’existant (emplacement prévu, ancien appareil, tableau électrique) nous aident à chiffrer plus vite : vous pouvez les envoyer par WhatsApp.' },
-  { q: 'Travaillez-vous avec les professionnels, agences et syndics ?', a: 'Oui : contrats d’entretien pour plusieurs logements ou locaux, interventions planifiées avant la saison et délais définis au contrat. Indiquez simplement votre profil dans le formulaire.' },
   { q: 'Où intervenez-vous ?', a: `Basés à ${site.city}, nous intervenons ${site.zoneText}. ${site.zoneFar}` },
 ];
 const faqLd = {
@@ -45,11 +46,6 @@ const prestations = [
   ['shield', 'Entretien', 'Visite ponctuelle ou contrat annuel.'],
   ['wrench', 'Dépannage', 'Diagnostic sur place, prix annoncé avant.'],
   ['swap', 'Remplacement', 'Ancien appareil déposé, fluides récupérés.'],
-] as const;
-const pros = [
-  ['calendar', 'Contrats d’entretien', 'Visites planifiées pour un parc de logements ou de locaux, avant la saison chaude.'],
-  ['bell', 'Astreinte et priorité', 'Délais d’intervention définis au contrat pour vos locataires et résidents.'],
-  ['user', 'Interlocuteur unique', 'Un contact direct, des comptes rendus après chaque passage, une facturation claire.'],
 ] as const;
 ---
 <Layout
@@ -170,6 +166,8 @@ const pros = [
 
   <Realisations />
 
+  <Avis />
+
   <!-- ENGAGEMENTS -->
   <section class="section hero-dark" aria-labelledby="engagements-titre">
     <div class="container-site">
@@ -193,68 +191,18 @@ const pros = [
 
   <!-- ZONE -->
   <section id="zone" class="section" aria-labelledby="zone-titre">
-    <div class="container-site grid items-center gap-10 md:grid-cols-[1fr_1.2fr]">
+    <div class="container-site grid items-center gap-10 md:grid-cols-[1fr_1.15fr]">
       <div class="reveal">
         <p class="eyebrow">Zone d’intervention</p>
-        <h2 id="zone-titre" class="h2 uppercase">Basés à {site.city}, on se déplace</h2>
-        <p class="mt-4 text-lg text-muted">Nous intervenons {site.zoneText}, sans nous limiter à une liste de communes. Une équipe proche, des déplacements courts et une bonne connaissance du terrain : bord de mer, copropriétés, résidences secondaires.</p>
-        <ul class="mt-6 flex flex-wrap gap-2">
-          {site.zone.map((c) => <li class="rounded-full border border-line bg-white px-4 py-2 font-medium">{c}</li>)}
-        </ul>
-        <p class="mt-4 text-muted">Ces communes ne sont que des exemples. {site.zoneFar}</p>
+        <h2 id="zone-titre" class="h2 uppercase">Partout dans le {site.region}</h2>
+        <p class="mt-4 text-lg text-muted">Du littoral à l’arrière-pays, nous intervenons dans tout le {site.region} : bord de mer, copropriétés, maisons, résidences secondaires.</p>
+        <p class="mt-5 flex items-start gap-3 rounded-2xl bg-white p-4 font-medium ring-1 ring-line">
+          <span class="chip-icon !h-10 !w-10 shrink-0"><Icon name="arrow" size={20} /></span>
+          <span>Plus loin ? <span class="text-accent-strong">Sur demande, sans problème.</span> Dites-nous où vous êtes, nous étudions chaque projet.</span>
+        </p>
         <a href="#devis" class="btn btn-primary mt-6">Nous parler de votre projet <Icon name="arrow" size={18} /></a>
       </div>
-      <div class="reveal" aria-hidden="true">
-        <svg viewBox="0 0 480 300" class="h-auto w-full">
-          <rect width="480" height="300" rx="28" fill="var(--accent-soft)" />
-          <path d="M0 210c60-10 90 20 150 10s80-40 140-30 90 40 190 20V300H0z" fill="var(--accent)" opacity=".35" />
-          <path d="M0 236c70-6 110 18 170 8s90-30 150-22 100 30 160 16V300H0z" fill="var(--accent)" opacity=".5" />
-          <path d="M40 60c40-20 120-30 200-20s150 10 200 40c10 40-10 80-50 100-60 20-110 0-160 10s-120 20-170-10C40 150 20 100 40 60z" fill="white" stroke="var(--ink)" stroke-width="2" stroke-dasharray="6 6" />
-          <path d="M215 200c10 18 6 34-4 44" stroke="var(--ink)" stroke-width="2" fill="none" />
-          <ellipse cx="238" cy="258" rx="40" ry="8" fill="white" opacity=".9" />
-          <circle cx="220" cy="170" r="26" fill="var(--accent)" opacity=".25" />
-          <circle cx="220" cy="170" r="9" fill="var(--ink)" />
-          <text x="236" y="164" font-family="Barlow Condensed, sans-serif" font-weight="700" font-size="22" fill="var(--ink)">HYÈRES</text>
-          <g font-family="Barlow, sans-serif" font-size="13" fill="var(--muted)">
-            <circle cx="140" cy="150" r="4" fill="var(--ink)" /><text x="104" y="140">Toulon</text>
-            <circle cx="300" cy="150" r="4" fill="var(--ink)" /><text x="290" y="140">La Londe</text>
-            <circle cx="180" cy="190" r="4" fill="var(--ink)" /><text x="96" y="196">Carqueiranne</text>
-            <circle cx="200" cy="110" r="4" fill="var(--ink)" /><text x="180" y="100">La Crau</text>
-            <circle cx="232" cy="250" r="4" fill="var(--ink)" /><text x="250" y="254">Giens</text>
-          </g>
-          <circle cx="420" cy="52" r="16" fill="var(--sun)" />
-        </svg>
-      </div>
-    </div>
-  </section>
-
-  <!-- PROS -->
-  <section id="pros" class="section bg-white" aria-labelledby="pros-titre">
-    <div class="container-site">
-      <div class="reveal grid items-end gap-8 md:grid-cols-[1.3fr_1fr]">
-        <div>
-          <p class="eyebrow">Pros, agences et syndics</p>
-          <h2 id="pros-titre" class="h2 uppercase">Un partenaire fiable pour vos biens</h2>
-          <p class="mt-4 max-w-xl text-lg text-muted">Locations saisonnières, résidences secondaires, copropriétés, locaux professionnels : nous organisons l’entretien et les interventions pour que vous n’ayez pas à y penser.</p>
-        </div>
-        <div>
-          <p class="font-semibold">Vous êtes :</p>
-          <div class="mt-3 flex flex-col gap-2">
-            {[['agence', 'Agence / conciergerie'], ['syndic', 'Syndic / copropriété'], ['professionnel', 'Artisan / professionnel']].map(([v, l]) => (
-              <a href={`/?demandeur=${v}#devis`} data-demandeur={v} class="card card-hover flex items-center justify-between px-5 py-3.5 font-semibold">{l} <Icon name="arrow" size={18} class="text-accent-strong" /></a>
-            ))}
-          </div>
-        </div>
-      </div>
-      <ul class="mt-10 grid gap-4 md:grid-cols-3">
-        {pros.map(([i, t, d]) => (
-          <li class="reveal rounded-2xl bg-[linear-gradient(135deg,var(--accent-soft),white_70%)] p-6 ring-1 ring-line">
-            <span class="chip-icon"><Icon name={i} size={22} /></span>
-            <h3 class="mt-4 text-2xl uppercase">{t}</h3>
-            <p class="mt-2 text-muted">{d}</p>
-          </li>
-        ))}
-      </ul>
+      <div class="reveal"><VarMap /></div>
     </div>
   </section>
 
