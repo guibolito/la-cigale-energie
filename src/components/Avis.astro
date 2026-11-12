@@ -39,6 +39,10 @@ const initiales = (n: string) => n.split(/\s+/).map((p) => p[0]).join('').slice(
         </a>
       </div>
 
+      {(ficheGoogle as any).apercu && (
+        <p class="mx-auto mt-6 max-w-xl rounded-xl border border-sun/50 bg-sun/15 px-4 py-2 text-center text-sm font-semibold text-sun">Aperçu de test : avis d’exemple, remplacés par vos vrais avis Google avant publication.</p>
+      )}
+
       <div class="avis-wall reveal mt-10 grid gap-5 md:grid-cols-2">
         {colonnes.map((c) => (
           <div class={`avis-col ${c.classe}`}>
