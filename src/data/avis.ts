@@ -14,7 +14,7 @@ export const ficheGoogle = {
   note: null as number | null,
   nombre: null as number | null,
   // Aperçu : affiche un bandeau « avis d'exemple » (branche de test uniquement).
-  apercu: true,
+  apercu: false,
 };
 
 export type Avis = { nom: string; texte: string; note: number; photo?: string; date?: string };
