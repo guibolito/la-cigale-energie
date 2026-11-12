@@ -37,7 +37,7 @@ const entreprise = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    {noindex && <meta name="robots" content="noindex" />}
+    {(noindex || site.prelancement) && <meta name="robots" content="noindex, nofollow" />}
     <meta name="theme-color" content="#10243A" />
     <script is:inline>document.documentElement.classList.add('js')</script>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />

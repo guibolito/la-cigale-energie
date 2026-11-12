@@ -1,5 +1,8 @@
 // Toutes les informations modifiables du site sont ici.
 export const site = {
+  // Pré-lancement : true = le site est caché à Google (noindex). Passez à false le jour du lancement.
+  prelancement: true,
+
   name: 'La Cigale Énergie',
   tagline: 'Énergie & confort de l’habitat, près de chez vous',
   city: 'Hyères',

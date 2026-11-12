@@ -19,7 +19,8 @@ export const ficheGoogle = {
 
 export type Avis = { nom: string; texte: string; note: number; photo?: string; date?: string };
 
-// AVIS D'EXEMPLE pour tester le design (branche test-avis uniquement, jamais sur le site public).
+// AVIS D'EXEMPLE pour tester le design (affichés avec le bandeau « exemple » tant que apercu = true).
+// À remplacer par les vrais avis Google, puis passer apercu à false.
 export const avis: Avis[] = [
   { nom: 'Sophie M.', note: 5, date: 'il y a 2 semaines', photo: '/avis/exemple-1.svg', texte: 'En plein mois d’août avec 34° dans la chambre de ma fille, j’ai appelé un lundi, la clim était posée le jeudi. Travail propre, rien à redire. Merci à La Cigale !' },
   { nom: 'Julien R.', note: 5, date: 'il y a 1 mois', texte: 'Merci à La Cigale, rapide et efficace.' },
