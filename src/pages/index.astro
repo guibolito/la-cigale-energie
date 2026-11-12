@@ -7,10 +7,10 @@ import EnergyVisual from '../components/EnergyVisual.astro';
 import Etapes from '../components/Etapes.astro';
 import Realisations from '../components/Realisations.astro';
 import { site } from '../config/site';
-import { services } from '../config/services';
+import { services, afficherBientot } from '../config/services';
 
 const actifs = services.filter((s) => s.enabled);
-const bientot = services.filter((s) => !s.enabled);
+const bientot = afficherBientot ? services.filter((s) => !s.enabled) : [];
 const listeBientot = bientot.map((s) => s.name.toLowerCase()).join(', ').replace(/, ([^,]*)$/, ' et $1');
 const nomsActifs = actifs.map((s) => s.name.toLowerCase()).join(', ');
 
@@ -53,7 +53,7 @@ const pros = [
 ---
 <Layout
   title="La Cigale Énergie | Énergie & confort de l’habitat à Hyères, dans le Var et alentours"
-  description="La Cigale Énergie, basée à Hyères : énergie et confort de l’habitat dans le Var et ses alentours. Climatisation et pompe à chaleur dès maintenant, électricité, solaire, chauffage et plomberie bientôt. Devis gratuit, prix ferme, réponse sous 24 h ouvrées."
+  description={`La Cigale Énergie, basée à Hyères : énergie et confort de l’habitat dans le Var et ses alentours. ${actifs.map((s) => s.name).join(', ')}${bientot.length ? ` dès maintenant, ${listeBientot} bientôt` : ''}. Devis gratuit, prix ferme, réponse sous 24 h ouvrées.`}
   jsonld={[faqLd]}
 >
   <!-- HERO -->
@@ -65,7 +65,7 @@ const pros = [
           Énergie & confort de l’habitat,<br /><span class="text-accent">près de chez vous.</span>
         </h1>
         <p class="mt-6 max-w-xl text-lg text-paper/80 md:text-xl">
-          Climatisation, pompe à chaleur, électricité, solaire, chauffage, plomberie : un seul interlocuteur pour l’énergie de votre logement. Un devis écrit, un prix annoncé, un chantier propre.
+          {[...actifs, ...bientot].map((s) => s.name).join(', ')} : un seul interlocuteur pour l’énergie et le confort de votre logement. Un devis écrit, un prix annoncé, un chantier propre.
         </p>
         <div class="mt-6 inline-flex flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl border border-paper/15 bg-paper/5 px-4 py-3 text-sm">
           <span class="inline-flex items-center gap-2 font-semibold text-paper"><span class="h-2 w-2 rounded-full bg-accent"></span> Disponible maintenant : {actifs.map((s) => s.name).join(', ')}</span>
