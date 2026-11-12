@@ -22,7 +22,7 @@ const faq = [
   { q: 'Quels travaux proposez-vous aujourd’hui ?', a: `Aujourd’hui : ${nomsActifs}.${bientot.length ? ` D’autres domaines ouvriront bientôt : ${listeBientot}.` : ''}` },
   { q: 'Sous quel délai répondez-vous ?', a: 'Nous répondons à chaque demande sous 24 h ouvrées. La date d’intervention est fixée avec vous et indiquée sur le devis.' },
   { q: 'Comment préparer ma demande ?', a: 'Indiquez votre commune, le type de logement et ce que vous souhaitez. Quelques photos de l’existant (emplacement prévu, ancien appareil, tableau électrique) nous aident à chiffrer plus vite : vous pouvez les envoyer par WhatsApp.' },
-  { q: 'Où intervenez-vous ?', a: `Basés à ${site.city}, nous intervenons ${site.zoneText}. ${site.zoneFar}` },
+  { q: 'Où intervenez-vous ?', a: `Nous intervenons ${site.zoneText}. ${site.zoneFar}` },
 ];
 const faqLd = {
   '@context': 'https://schema.org',
@@ -33,7 +33,7 @@ const atouts = [
   ['doc', 'Devis gratuit', 'Écrit, détaillé, sans engagement'],
   ['shield', 'Prix ferme', 'Le prix du devis est celui facturé'],
   ['clock', 'Réponse en 24 h', 'Sur chaque demande, jours ouvrés'],
-  ['pin', 'Var & alentours', 'Basés à Hyères, et plus loin sur demande'],
+  ['pin', 'Var & alentours', 'Et plus loin sur demande'],
 ] as const;
 const engagements = [
   ['user', 'Un seul interlocuteur', 'Le même contact du premier appel à la mise en service. Pas de plateforme, pas de relais.'],
@@ -53,15 +53,15 @@ const prestations = [
     ? 'La Cigale Énergie | Énergie & confort de l’habitat à Hyères, dans le Var et alentours'
     : 'Climatisation à Hyères, dans le Var et alentours | La Cigale Énergie'}
   description={accueilGeneraliste
-    ? `La Cigale Énergie, basée à Hyères : énergie et confort de l’habitat dans le Var et ses alentours. ${actifs.map((s) => s.name).join(', ')}${bientot.length ? ` dès maintenant, ${listeBientot} bientôt` : ''}. Devis gratuit, prix ferme, réponse sous 24 h ouvrées.`
-    : 'La Cigale Énergie, basée à Hyères : pose, entretien, dépannage et remplacement de climatisation dans le Var et ses alentours. Devis gratuit, prix ferme, réponse sous 24 h ouvrées.'}
+    ? `La Cigale Énergie : énergie et confort de l’habitat dans le Var et ses alentours. ${actifs.map((s) => s.name).join(', ')}${bientot.length ? ` dès maintenant, ${listeBientot} bientôt` : ''}. Devis gratuit, prix ferme, réponse sous 24 h ouvrées.`
+    : 'La Cigale Énergie : pose, entretien, dépannage et remplacement de climatisation dans le Var et ses alentours. Devis gratuit, prix ferme, réponse sous 24 h ouvrées.'}
   jsonld={[faqLd]}
 >
   <!-- HERO -->
   <section class="hero-dark">
     <div class="container-site grid items-center gap-14 pb-20 pt-12 md:grid-cols-[1.15fr_1fr] md:pb-28 md:pt-20">
       <div>
-        <p class="eyebrow inline-flex items-center gap-2"><Icon name="pin" size={16} /> Basés à {site.city} · {site.region} et alentours</p>
+        <p class="eyebrow inline-flex items-center gap-2"><Icon name="pin" size={16} /> {site.region} et alentours</p>
         {accueilGeneraliste ? (
           <>
             <h1 class="mt-4 text-[clamp(2.6rem,9.5vw,4.4rem)] uppercase">
