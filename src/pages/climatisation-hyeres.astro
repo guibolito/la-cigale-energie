@@ -19,25 +19,26 @@ const compris = [
 ];
 
 const bonASavoir = [
-  ['swap', 'Clim ou pompe à chaleur air-eau ?', 'La clim réversible (PAC air-air) rafraîchit et chauffe pièce par pièce. La PAC air-eau remplace une chaudière en alimentant vos radiateurs ou votre plancher chauffant, et peut produire l’eau chaude. Nous vous orientons selon votre logement, pas selon le catalogue.'],
+  ['swap', 'Mono-split ou multi-split ?', 'Le mono-split climatise une pièce avec une unité intérieure. Le multi-split relie plusieurs unités à un seul groupe extérieur : idéal pour plusieurs pièces, avec un seul appareil dehors. Nous vous orientons selon votre logement, pas selon le catalogue.'],
   ['home', 'En copropriété, anticiper l’accord', 'Une unité extérieure en façade ou sur un balcon demande souvent l’accord de l’assemblée générale, parfois une déclaration en mairie. Nous fournissons le descriptif technique et plaçons l’unité pour limiter le bruit chez les voisins.'],
   ['drop', 'En bord de mer, protéger l’unité extérieure', 'L’air salin use plus vite les échangeurs. Emplacement abrité, matériel adapté quand le modèle le propose et entretien régulier prolongent nettement la durée de vie.'],
   ['calendar', 'Résidence secondaire ou location', 'Un entretien au printemps évite les mauvaises surprises à l’arrivée des vacanciers. Selon les modèles, un pilotage à distance permet de lancer le confort avant votre venue.'],
 ] as const;
 
 const prestations = [
-  ['ac', 'Installation', 'Clim mono ou multisplit, pompe à chaleur air-air réversible ou air-eau sur vos radiateurs. Puissance calculée pour votre logement, pose soignée, mise en service et prise en main.'],
+  ['ac', 'Installation', 'Clim mono ou multisplit, réversible pour rafraîchir l’été et chauffer l’hiver. Puissance calculée pour votre logement, pose soignée, mise en service et prise en main.'],
   ['shield', 'Entretien', 'Filtres, échangeurs, condensats, contrôle du fonctionnement. Visite ponctuelle ou contrat annuel : votre équipement consomme moins et dure plus longtemps.'],
   ['wrench', 'Dépannage', 'Plus de froid ou de chauffage, fuite d’eau, code erreur, bruit anormal : diagnostic sur place et prix annoncé avant toute réparation.'],
   ['swap', 'Remplacement', 'Appareil ancien, énergivore ou en panne : dépose, récupération des fluides dans les règles et pose d’un équipement récent, plus sobre et plus silencieux.'],
 ] as const;
 
 const faq = [
-  { q: 'Combien coûte une climatisation ou une pompe à chaleur ?', a: 'Le prix dépend du type d’équipement (clim monosplit, multisplit ou pompe à chaleur air-eau), de la puissance nécessaire, du nombre de pièces et de l’accès au chantier. Après une courte visite ou l’envoi de quelques photos, vous recevez un devis écrit avec un prix ferme : c’est ce prix qui est facturé.' },
-  { q: 'Clim réversible ou pompe à chaleur air-eau : que choisir ?', a: 'La clim réversible (pompe à chaleur air-air) rafraîchit l’été et chauffe l’hiver, pièce par pièce : en monosplit pour une pièce, en multisplit pour plusieurs pièces avec un seul groupe extérieur. La pompe à chaleur air-eau alimente vos radiateurs ou votre plancher chauffant, peut produire l’eau chaude et remplace souvent une chaudière ; elle ne rafraîchit généralement pas. Nous vous conseillons selon votre logement, votre chauffage actuel et vos priorités.' },
-  { q: 'Quand faut-il prévoir l’installation ?', a: 'Le délai dépend du matériel choisi et de la saison : il est indiqué sur le devis. Pour la clim, anticipez avant l’été ; pour une pompe à chaleur, avant l’hiver.' },
-  { q: 'L’entretien d’une clim ou d’une pompe à chaleur est-il obligatoire ?', a: 'Pour les pompes à chaleur, climatisations réversibles comprises, d’une puissance entre 4 et 70 kW, la réglementation impose un entretien au moins tous les deux ans. Des contrôles d’étanchéité peuvent s’ajouter selon la quantité de fluide frigorigène. Nous vous indiquons ce qui s’applique à votre équipement. Dans tous les cas, un entretien régulier est recommandé : il préserve les performances, limite la consommation et prolonge la durée de vie de l’appareil.' },
-  { q: 'Existe-t-il des aides financières ?', a: 'Cela dépend de l’équipement. Les pompes à chaleur air-eau peuvent ouvrir droit à des aides à la rénovation énergétique, sous conditions (logement, ressources, matériel) et à condition de passer par un professionnel disposant de la qualification exigée. Les climatisations air-air sont en général peu ou pas aidées. Nous vous disons clairement, au moment du devis, ce qui est envisageable pour votre projet. Le site officiel france-renov.gouv.fr permet aussi de faire le point.' },
+  { q: 'Combien coûte une climatisation ?', a: 'Le prix dépend du type d’équipement (monosplit ou multisplit), de la puissance nécessaire, du nombre de pièces et de l’accès au chantier. Après une courte visite ou l’envoi de quelques photos, vous recevez un devis écrit avec un prix ferme : c’est ce prix qui est facturé.' },
+  { q: 'Une clim peut-elle aussi chauffer ?', a: 'Oui : une climatisation réversible rafraîchit l’été et chauffe l’hiver, pièce par pièce. En mi-saison et dans notre climat, elle peut suffire à chauffer une grande partie du logement. Nous vous conseillons selon votre logement, votre chauffage actuel et vos priorités.' },
+  { q: 'Quelle puissance faut-il ?', a: 'Elle dépend de la surface, de l’orientation, de l’isolation et des ouvertures. Un appareil trop petit force, un appareil trop grand s’use vite : nous la calculons pour votre logement.' },
+  { q: 'Quand faut-il prévoir l’installation ?', a: 'Le délai dépend du matériel choisi et de la saison : il est indiqué sur le devis. Pour la clim, mieux vaut anticiper avant l’été, quand les plannings se remplissent.' },
+  { q: 'L’entretien d’une clim est-il obligatoire ?', a: 'Pour les climatisations réversibles d’une puissance entre 4 et 70 kW, la réglementation impose un entretien au moins tous les deux ans. Des contrôles d’étanchéité peuvent s’ajouter selon la quantité de fluide frigorigène. Nous vous indiquons ce qui s’applique à votre équipement. Dans tous les cas, un entretien régulier est recommandé : il préserve les performances, limite la consommation et prolonge la durée de vie de l’appareil.' },
+  { q: 'Existe-t-il des aides financières ?', a: 'Les climatisations sont en général peu ou pas aidées. Nous vous disons clairement, au moment du devis, si quelque chose est envisageable pour votre projet. Le site officiel france-renov.gouv.fr permet aussi de faire le point.' },
   { q: 'Intervenez-vous en cas de panne ?', a: 'Oui : diagnostic sur place et prix annoncé avant toute réparation. Les clients sous contrat Sérénité sont dépannés en priorité sous 48 h.' },
 ];
 const faqLd = {
@@ -50,13 +51,13 @@ const crumbLd = {
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Accueil', item: new URL('/', Astro.site).href },
-    { '@type': 'ListItem', position: 2, name: 'Climatisation & pompe à chaleur à Hyères', item: new URL('/climatisation-hyeres', Astro.site).href },
+    { '@type': 'ListItem', position: 2, name: 'Climatisation à Hyères', item: new URL('/climatisation-hyeres', Astro.site).href },
   ],
 };
 ---
 <Layout
-  title="Climatisation & pompe à chaleur à Hyères | La Cigale Énergie"
-  description="Installation, entretien, dépannage et remplacement de climatisation et pompe à chaleur à Hyères, Giens, La Londe, Carqueiranne, dans le Var et alentours. Devis gratuit, prix ferme, réponse sous 24 h ouvrées."
+  title="Climatisation à Hyères : pose, entretien, dépannage | La Cigale Énergie"
+  description="Installation, entretien, dépannage et remplacement de climatisation à Hyères, Giens, La Londe, Carqueiranne, dans le Var et alentours. Devis gratuit, prix ferme, réponse sous 24 h ouvrées."
   jsonld={[faqLd, crumbLd]}
 >
   <!-- HERO -->
@@ -64,10 +65,10 @@ const crumbLd = {
     <div class="container-site grid items-center gap-14 pb-20 pt-10 md:grid-cols-[1.15fr_1fr] md:pb-28 md:pt-16">
       <div>
         <nav aria-label="Fil d’Ariane" class="text-sm text-paper/60">
-          <a href="/" class="hover:text-paper hover:underline">Accueil</a> <span aria-hidden="true">/</span> <span aria-current="page">Climatisation & pompe à chaleur à {site.city}</span>
+          <a href="/" class="hover:text-paper hover:underline">Accueil</a> <span aria-hidden="true">/</span> <span aria-current="page">Climatisation à {site.city}</span>
         </nav>
         <h1 class="mt-5">
-          <span class="eyebrow block">Climatisation & pompe à chaleur à {site.city}</span>
+          <span class="eyebrow block">Climatisation à {site.city}</span>
           <span class="mt-3 block text-[clamp(2.6rem,9.5vw,4.4rem)] uppercase">Le frais l’été,<br />le chaud l’hiver.<br /><span class="text-accent">Sans prise de tête.</span></span>
         </h1>
         <p class="mt-6 max-w-xl text-lg text-paper/80">Hyères est notre base : centre-ville, Costebelle, L’Ayguade, Les Salins, Le Port, Giens… Nous connaissons les contraintes locales : copropriétés en centre ancien, maisons exposées au vent et à l’air salin près du littoral, résidences secondaires à préparer avant l’été.</p>
@@ -120,8 +121,8 @@ const crumbLd = {
   <section class="section bg-white" aria-labelledby="prestations-titre">
     <div class="container-site">
       <div class="reveal">
-        <p class="eyebrow">Climatisation & pompe à chaleur</p>
-        <h2 id="prestations-titre" class="h2 uppercase">Ce que nous faisons en climatisation et pompe à chaleur</h2>
+        <p class="eyebrow">Nos prestations</p>
+        <h2 id="prestations-titre" class="h2 uppercase">Tout pour votre climatisation</h2>
       </div>
       <ul class="mt-10 grid gap-5 md:grid-cols-2">
         {prestations.map(([i, t, d], k) => (
@@ -166,7 +167,7 @@ const crumbLd = {
     </div>
   </section>
 
-  <Realisations titre="Nos chantiers en climatisation et pompe à chaleur" />
+  <Realisations titre="Nos chantiers en climatisation" />
 
   <Etapes />
 
@@ -175,7 +176,7 @@ const crumbLd = {
     <div class="container-site grid gap-10 md:grid-cols-[1fr_1.6fr]">
       <div class="reveal">
         <p class="eyebrow">Questions fréquentes</p>
-        <h2 id="faq-titre" class="h2 uppercase">Climatisation & pompe à chaleur : vos questions</h2>
+        <h2 id="faq-titre" class="h2 uppercase">Climatisation : vos questions</h2>
         <p class="mt-4 text-muted">Une autre question ? <a href={`mailto:${site.email}`} class="font-semibold text-accent-strong underline">Écrivez-nous</a>.</p>
         <div class="mt-8 rounded-2xl bg-accent-soft p-5">
           <p class="flex items-start gap-3"><Icon name="pin" class="mt-1 shrink-0 text-accent-strong" /> <span>Basés à {site.city}, nous intervenons {site.zoneText}. {site.zoneFar}</span></p>
