@@ -25,14 +25,16 @@ const colonnes = [
 const initiales = (n: string) => n.split(/\s+/).map((p) => p[0]).join('').slice(0, 2).toUpperCase();
 ---
 {liste.length > 0 && (
-  <section id="avis" class="section bg-white" aria-labelledby="avis-titre">
+  <section id="avis" class="section hero-dark" aria-labelledby="avis-titre">
     <div class="container-site">
       <div class="reveal text-center">
         <p class="eyebrow">Avis clients</p>
         <h2 id="avis-titre" class="h2 uppercase">Ils en parlent mieux que nous</h2>
-        <a href={ficheGoogle.lien || undefined} target="_blank" rel="noopener" class="mt-5 inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-2 text-sm shadow-sm hover:border-accent" data-track="Avis Google" data-place="badge">
-          <Icon name="star" size={18} class="text-sun" />
-          <b class="text-base">{noteTexte}</b> sur {nombre} avis Google
+        <a href={ficheGoogle.lien || undefined} target="_blank" rel="noopener" class="mt-6 inline-flex items-center gap-3 rounded-full bg-paper py-2 pl-2 pr-5 text-sm text-ink shadow-lg transition hover:-translate-y-0.5" data-track="Avis Google" data-place="badge">
+          <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-sm"><Icon name="google" size={18} class="text-[#4285F4]" /></span>
+          <b class="font-display text-2xl leading-none">{noteTexte}</b>
+          <span class="flex text-sun" aria-hidden="true">{Array.from({ length: 5 }, () => <Icon name="star" size={16} />)}</span>
+          <span class="text-muted">{nombre} avis Google</span>
           {ficheGoogle.lien && <Icon name="external" size={14} class="text-muted" />}
         </a>
       </div>
@@ -43,12 +45,12 @@ const initiales = (n: string) => n.split(/\s+/).map((p) => p[0]).join('').slice(
             <ul class:list={['avis-track', c.inverse && 'avis-track--inverse']} style={`--duree:${c.duree}s`}>
               {[...c.items, ...c.items].map((a, i) => (
                 <li class="pb-5" aria-hidden={i >= c.base.length ? 'true' : undefined}>
-                  <figure class="card flex flex-col gap-4 p-6 shadow-[0_10px_30px_-22px_rgba(16,36,58,.5)]">
+                  <figure class="flex flex-col gap-4 rounded-2xl bg-paper p-6 text-ink shadow-[0_18px_40px_-24px_rgba(0,0,0,.6)]">
                     <div class="flex items-center justify-between">
                       <span class="flex text-sun" role="img" aria-label={`${a.note} étoiles sur 5`}>
                         {Array.from({ length: 5 }, (_, k) => <Icon name="star" size={18} class={k < a.note ? '' : 'opacity-25'} />)}
                       </span>
-                      <span class="font-display text-4xl leading-none text-accent-soft" aria-hidden="true">”</span>
+                      <span class="font-display text-5xl leading-none text-accent/40" aria-hidden="true">”</span>
                     </div>
                     <blockquote class="text-[1.02rem] leading-relaxed">« {a.texte} »</blockquote>
                     <figcaption class="flex items-center gap-3">
@@ -73,7 +75,7 @@ const initiales = (n: string) => n.split(/\s+/).map((p) => p[0]).join('').slice(
 
       {ficheGoogle.lien && (
         <div class="mt-8 text-center">
-          <a href={ficheGoogle.lien} target="_blank" rel="noopener" class="btn btn-ghost" data-track="Avis Google" data-place="bouton">Voir tous nos avis sur Google <Icon name="external" size={16} /></a>
+          <a href={ficheGoogle.lien} target="_blank" rel="noopener" class="btn btn-light" data-track="Avis Google" data-place="bouton">Voir tous nos avis sur Google <Icon name="external" size={16} /></a>
         </div>
       )}
     </div>
