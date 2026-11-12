@@ -7,7 +7,8 @@ import EnergyVisual from '../components/EnergyVisual.astro';
 import Etapes from '../components/Etapes.astro';
 import Realisations from '../components/Realisations.astro';
 import { site } from '../config/site';
-import { services, afficherBientot } from '../config/services';
+import { services, afficherBientot, accueilGeneraliste } from '../config/services';
+import HeroVisual from '../components/HeroVisual.astro';
 
 const actifs = services.filter((s) => s.enabled);
 const bientot = afficherBientot ? services.filter((s) => !s.enabled) : [];
@@ -52,8 +53,12 @@ const pros = [
 ] as const;
 ---
 <Layout
-  title="La Cigale Énergie | Énergie & confort de l’habitat à Hyères, dans le Var et alentours"
-  description={`La Cigale Énergie, basée à Hyères : énergie et confort de l’habitat dans le Var et ses alentours. ${actifs.map((s) => s.name).join(', ')}${bientot.length ? ` dès maintenant, ${listeBientot} bientôt` : ''}. Devis gratuit, prix ferme, réponse sous 24 h ouvrées.`}
+  title={accueilGeneraliste
+    ? 'La Cigale Énergie | Énergie & confort de l’habitat à Hyères, dans le Var et alentours'
+    : 'Climatisation à Hyères, dans le Var et alentours | La Cigale Énergie'}
+  description={accueilGeneraliste
+    ? `La Cigale Énergie, basée à Hyères : énergie et confort de l’habitat dans le Var et ses alentours. ${actifs.map((s) => s.name).join(', ')}${bientot.length ? ` dès maintenant, ${listeBientot} bientôt` : ''}. Devis gratuit, prix ferme, réponse sous 24 h ouvrées.`
+    : 'La Cigale Énergie, basée à Hyères : pose, entretien, dépannage et remplacement de climatisation dans le Var et ses alentours. Devis gratuit, prix ferme, réponse sous 24 h ouvrées.'}
   jsonld={[faqLd]}
 >
   <!-- HERO -->
@@ -61,22 +66,35 @@ const pros = [
     <div class="container-site grid items-center gap-14 pb-20 pt-12 md:grid-cols-[1.15fr_1fr] md:pb-28 md:pt-20">
       <div>
         <p class="eyebrow inline-flex items-center gap-2"><Icon name="pin" size={16} /> Basés à {site.city} · {site.region} et alentours</p>
-        <h1 class="mt-4 text-[clamp(2.6rem,9.5vw,4.4rem)] uppercase">
-          Énergie & confort de l’habitat,<br /><span class="text-accent">près de chez vous.</span>
-        </h1>
-        <p class="mt-6 max-w-xl text-lg text-paper/80 md:text-xl">
-          {[...actifs, ...bientot].map((s) => s.name).join(', ')} : un seul interlocuteur pour l’énergie et le confort de votre logement. Un devis écrit, un prix annoncé, un chantier propre.
-        </p>
-        <div class="mt-6 inline-flex flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl border border-paper/15 bg-paper/5 px-4 py-3 text-sm">
+        {accueilGeneraliste ? (
+          <>
+            <h1 class="mt-4 text-[clamp(2.6rem,9.5vw,4.4rem)] uppercase">
+              Énergie & confort de l’habitat,<br /><span class="text-accent">près de chez vous.</span>
+            </h1>
+            <p class="mt-6 max-w-xl text-lg text-paper/80 md:text-xl">
+              {[...actifs, ...bientot].map((s) => s.name).join(', ')} : un seul interlocuteur pour l’énergie et le confort de votre logement. Un devis écrit, un prix annoncé, un chantier propre.
+            </p>
+          </>
+        ) : (
+          <>
+            <h1 class="mt-4 text-[clamp(2.6rem,9.5vw,4.4rem)] uppercase">
+              Le frais l’été,<br />le chaud l’hiver.<br /><span class="text-accent">Sans prise de tête.</span>
+            </h1>
+            <p class="mt-6 max-w-xl text-lg text-paper/80 md:text-xl">
+              Pose, entretien, dépannage et remplacement de climatisation. Un seul interlocuteur, un devis écrit et un prix ferme annoncé avant le chantier.
+            </p>
+          </>
+        )}
+        {accueilGeneraliste && <div class="mt-6 inline-flex flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl border border-paper/15 bg-paper/5 px-4 py-3 text-sm">
           <span class="inline-flex items-center gap-2 font-semibold text-paper"><span class="h-2 w-2 rounded-full bg-accent"></span> Disponible maintenant : {actifs.map((s) => s.name).join(', ')}</span>
           {bientot.length > 0 && <span class="text-paper/60">Bientôt : {listeBientot}.</span>}
-        </div>
+        </div>}
         <div class="mt-8 flex flex-col gap-3 sm:flex-row">
           <a href="#devis" class="btn btn-primary text-lg" data-track="CTA devis" data-place="hero">Demander un devis gratuit <Icon name="arrow" /></a>
           <a href={`tel:${site.phone.tel}`} class="btn btn-light text-lg" data-track="Appel" data-place="hero"><Icon name="phone" /> <span class="sr-only">Appeler le</span> {site.phone.display}</a>
         </div>
       </div>
-      <EnergyVisual />
+      {accueilGeneraliste ? <EnergyVisual /> : <HeroVisual />}
     </div>
   </section>
 
@@ -101,8 +119,8 @@ const pros = [
   <section id="services" class="section" aria-labelledby="services-titre">
     <div class="container-site">
       <div class="reveal">
-        <p class="eyebrow">Nos domaines</p>
-        <h2 id="services-titre" class="h2 uppercase">Ce que nous faisons pour votre logement</h2>
+        <p class="eyebrow">{accueilGeneraliste ? 'Nos domaines' : 'Notre métier'}</p>
+        <h2 id="services-titre" class="h2 uppercase">{accueilGeneraliste ? 'Ce que nous faisons pour votre logement' : 'Votre climatisation, de A à Z'}</h2>
       </div>
 
       {actifs.map((s) => (

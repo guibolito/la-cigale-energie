@@ -4,6 +4,11 @@
 // false = le site ne parle que des services ouverts (enabled: true). Passez à true pour les montrer.
 export const afficherBientot = false;
 
+// Page d'accueil :
+// false = accueil centré sur la climatisation (tant que c'est la seule activité).
+// true  = accueil « énergie » général (maison + tous les domaines), pour quand il y aura plusieurs activités.
+export const accueilGeneraliste = false;
+
 export type Service = {
   slug: string;
   name: string;
