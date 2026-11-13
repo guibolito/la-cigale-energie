@@ -50,8 +50,8 @@ const prestations = [
 ---
 <Layout
   title={accueilGeneraliste
-    ? 'La Cigale Énergie | Énergie & confort de l’habitat à Hyères, dans le Var et alentours'
-    : 'Climatisation à Hyères, dans le Var et alentours | La Cigale Énergie'}
+    ? 'La Cigale Énergie | Énergie & confort de l’habitat dans le Sud de la France'
+    : 'Climatisation dans le Sud de la France | La Cigale Énergie'}
   description={accueilGeneraliste
     ? `La Cigale Énergie : énergie et confort de l’habitat dans le Var et ses alentours. ${actifs.map((s) => s.name).join(', ')}${bientot.length ? ` dès maintenant, ${listeBientot} bientôt` : ''}. Devis gratuit, prix ferme, réponse sous 24 h ouvrées.`
     : 'La Cigale Énergie : pose, entretien, dépannage et remplacement de climatisation dans le Var et ses alentours. Devis gratuit, prix ferme, réponse sous 24 h ouvrées.'}
@@ -129,7 +129,6 @@ const prestations = [
             <h3 class="mt-5 text-[clamp(2rem,6vw,3rem)] uppercase">{s.name}</h3>
             <p class="mt-3 max-w-md text-lg font-medium">Frais l’été, chaud l’hiver, avec un seul équipement bien dimensionné.</p>
             <p class="mt-2 max-w-md text-paper/75">Climatisation mono et multisplit, réversible : pose, entretien, dépannage, remplacement.</p>
-            <a href={s.href} class="btn btn-primary mt-8">Découvrir <Icon name="arrow" size={18} /></a>
           </div>
           <ul class="grid grid-cols-2 gap-px bg-paper/10">
             {prestations.map(([i, t, d]) => (

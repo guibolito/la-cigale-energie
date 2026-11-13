@@ -7,6 +7,8 @@ import vercel from '@astrojs/vercel';
 export default defineConfig({
   site: 'https://la-cigale-energie.vercel.app',
   adapter: vercel(),
+  // Ancienne adresse de la page clim : redirigée vers la nouvelle
+  redirects: { '/climatisation-hyeres': '/climatisation' },
   integrations: [sitemap({ filter: (page) => !page.includes('/404') && !page.includes('/api/') })],
   vite: { plugins: [tailwindcss()] },
 });

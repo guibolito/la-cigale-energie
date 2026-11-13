@@ -19,7 +19,7 @@ export type Service = {
 };
 
 export const services: Service[] = [
-  { slug: 'climatisation', name: 'Climatisation', short: 'Confort thermique', icon: 'ac', enabled: true, href: '/climatisation-hyeres' },
+  { slug: 'climatisation', name: 'Climatisation', short: 'Confort thermique', icon: 'ac', enabled: true, href: '/climatisation' },
   { slug: 'electricite-solaire', name: 'Électricité, solaire & recharge', short: 'Électricité & énergie solaire', icon: 'bolt', enabled: false },
   { slug: 'chauffage', name: 'Chauffage & eau chaude', short: 'Confort thermique', icon: 'flame', enabled: false },
   { slug: 'plomberie', name: 'Plomberie', short: 'Eau & sanitaire', icon: 'drop', enabled: false },
