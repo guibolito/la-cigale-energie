@@ -1,0 +1,192 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import Faq from '../components/Faq.astro';
+import DevisForm from '../components/DevisForm.astro';
+import { site } from '../config/site';
+
+const faq = [
+  { q: 'Comment est calculée la puissance ?', a: 'Le calcul part du volume de la pièce (surface × hauteur sous plafond), multiplié par un besoin de froid qui dépend de l’isolation. Il est ensuite ajusté selon l’exposition au soleil, un dernier étage sous toiture, les grandes baies vitrées et le nombre d’occupants.' },
+  { q: 'Ce résultat est-il fiable ?', a: 'C’est une bonne première estimation. Le dimensionnement définitif se fait lors du devis, sur place ou sur photos : orientation exacte, matériaux, vitrages, usage de la pièce.' },
+  { q: 'kW ou BTU : quelle différence ?', a: 'Ce sont deux unités de puissance. Les fabricants européens indiquent des kW, certains utilisent les BTU/h. 1 kW correspond à environ 3 400 BTU/h : un modèle « 9 000 BTU » fait donc environ 2,6 kW.' },
+  { q: 'Que faire si j’ai plusieurs pièces ?', a: 'Faites le calcul pour chaque pièce. Si vous voulez climatiser plusieurs pièces, un multisplit relie plusieurs unités intérieures à un seul groupe extérieur : nous vous proposons la bonne configuration.' },
+];
+const jsonld = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'Calculateur de puissance de climatisation',
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Tous',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+    url: new URL('/calculateur-clim', Astro.site).href,
+    provider: { '@id': new URL('/#entreprise', Astro.site).href },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
+];
+const exposition = [
+  ['nord', 'Nord / ombragée'],
+  ['est', 'Est'],
+  ['sud', 'Sud ou ouest, très ensoleillée'],
+];
+const isolation = [
+  ['bonne', 'Bonne (logement récent)'],
+  ['moyenne', 'Moyenne'],
+  ['faible', 'Faible (ancien, peu isolé)'],
+];
+---
+<Layout
+  title={`Calculateur de puissance de climatisation (kW, BTU) gratuit | ${site.name}`}
+  description="Calculez gratuitement la puissance de climatisation nécessaire pour votre pièce : surface, hauteur, exposition, isolation. Résultat en kW et BTU, en 30 secondes."
+  jsonld={jsonld}
+>
+  <section class="hero-dark">
+    <div class="container-site py-12 md:py-16">
+      <nav aria-label="Fil d’Ariane" class="text-sm text-paper/60"><a href="/" class="hover:text-paper hover:underline">Accueil</a> <span aria-hidden="true">/</span> <span aria-current="page">Calculateur de puissance</span></nav>
+      <h1 class="mt-5 max-w-4xl text-[clamp(2.3rem,7.5vw,4rem)] uppercase">Quelle puissance de <span class="text-accent">clim</span> pour ma pièce ?</h1>
+      <p class="mt-4 max-w-2xl text-lg text-paper/80">Répondez à 6 questions, obtenez une estimation en kW et en BTU. Gratuit, sans inscription.</p>
+    </div>
+  </section>
+
+  <section class="relative z-10 -mt-8 pb-16" aria-label="Calculateur">
+    <div class="container-site grid gap-6 lg:grid-cols-[1.2fr_1fr]">
+      <form id="calc" class="card grid gap-5 p-6 shadow-[0_20px_50px_-30px_rgba(16,36,58,.45)] md:p-8" novalidate>
+        <div class="grid gap-5 sm:grid-cols-2">
+          <div>
+            <label for="surface" class="label">Surface de la pièce</label>
+            <div class="relative">
+              <input id="surface" name="surface" type="number" inputmode="decimal" min="5" max="200" step="1" value="20" class="field pr-12" required />
+              <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-muted">m²</span>
+            </div>
+          </div>
+          <div>
+            <label for="hauteur" class="label">Hauteur sous plafond</label>
+            <div class="relative">
+              <input id="hauteur" name="hauteur" type="number" inputmode="decimal" min="2" max="6" step="0.1" value="2.5" class="field pr-12" required />
+              <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-muted">m</span>
+            </div>
+          </div>
+        </div>
+        <fieldset>
+          <legend class="label">Exposition de la pièce</legend>
+          <div class="grid gap-2 sm:grid-cols-3">
+            {exposition.map(([v, l], i) => (
+              <label class="calc-choice"><input type="radio" name="exposition" value={v} checked={i === 1} /><span>{l}</span></label>
+            ))}
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend class="label">Isolation</legend>
+          <div class="grid gap-2 sm:grid-cols-3">
+            {isolation.map(([v, l], i) => (
+              <label class="calc-choice"><input type="radio" name="isolation" value={v} checked={i === 1} /><span>{l}</span></label>
+            ))}
+          </div>
+        </fieldset>
+        <div class="grid gap-3 sm:grid-cols-2">
+          <label class="calc-choice"><input type="checkbox" name="toit" /><span>Dernier étage sous la toiture</span></label>
+          <label class="calc-choice"><input type="checkbox" name="baies" /><span>Grandes baies vitrées</span></label>
+        </div>
+        <div>
+          <label for="personnes" class="label">Personnes habituellement dans la pièce</label>
+          <input id="personnes" name="personnes" type="number" inputmode="numeric" min="1" max="20" step="1" value="2" class="field max-w-40" />
+        </div>
+      </form>
+
+      <div class="lg:sticky lg:top-24 lg:self-start">
+        <div class="rounded-[1.75rem] bg-ink p-6 text-paper md:p-8" aria-live="polite">
+          <p class="eyebrow !text-sun">Puissance estimée</p>
+          <p class="mt-2 font-display font-bold leading-none"><span id="r-kw" class="text-7xl">2,0</span> <span class="text-3xl">kW</span></p>
+          <p class="mt-2 text-paper/75">soit environ <b id="r-btu" class="text-paper">6 800</b> BTU/h · fourchette <span id="r-range">1,8 – 2,2</span> kW</p>
+          <div class="mt-6 rounded-2xl bg-paper/10 p-4">
+            <p class="text-sm text-paper/70">Modèle conseillé</p>
+            <p id="r-modele" class="mt-1 font-display text-3xl font-bold uppercase">Monosplit 2,0 kW</p>
+            <p id="r-note" class="mt-1 text-sm text-paper/70"></p>
+          </div>
+          <a href="#devis" id="r-cta" data-besoin="Installation" class="btn btn-primary mt-6 w-full text-lg" data-track="CTA devis" data-place="calculateur">Recevoir mon devis gratuit <Icon name="arrow" /></a>
+          <p class="mt-4 text-xs text-paper/60">Estimation indicative. La puissance exacte est confirmée lors du devis, sur place ou sur photos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-white" aria-labelledby="comment-titre">
+    <div class="container-site grid gap-10 md:grid-cols-2">
+      <div class="reveal">
+        <p class="eyebrow">Bien comprendre</p>
+        <h2 id="comment-titre" class="h2 uppercase">Pourquoi la bonne puissance compte</h2>
+        <p class="mt-4 text-lg text-muted">Une clim <b class="text-ink">trop faible</b> tourne en permanence sans atteindre la température demandée. Une clim <b class="text-ink">trop puissante</b> démarre et s’arrête sans cesse : elle s’use plus vite, déshumidifie mal et consomme davantage.</p>
+        <p class="mt-4 text-lg text-muted">Dans le Var, l’exposition et l’isolation font souvent varier le besoin de 20 à 40 % pour une même surface. C’est pourquoi nous confirmons toujours le calcul avant le devis.</p>
+        <a href="/blog/quelle-puissance-climatisation" class="mt-5 inline-flex items-center gap-2 font-semibold text-accent-strong hover:underline">Lire notre guide complet <Icon name="arrow" size={18} /></a>
+      </div>
+      <div class="reveal">
+        <h3 class="text-2xl uppercase">Repères rapides (2,50 m sous plafond)</h3>
+        <table class="mt-4 w-full text-left">
+          <thead><tr class="border-b border-line text-sm uppercase text-muted"><th class="py-2">Surface</th><th>Puissance</th><th>Modèle courant</th></tr></thead>
+          <tbody class="font-medium">
+            <tr class="border-b border-line"><td class="py-3">10 m²</td><td>1 à 1,3 kW</td><td>2 kW</td></tr>
+            <tr class="border-b border-line"><td class="py-3">20 m²</td><td>2 à 2,5 kW</td><td>2,5 kW</td></tr>
+            <tr class="border-b border-line"><td class="py-3">30 m²</td><td>3 à 3,5 kW</td><td>3,5 kW</td></tr>
+            <tr><td class="py-3">40 m²</td><td>4 à 5 kW</td><td>5 kW</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="faq-titre">
+    <div class="container-site grid gap-10 md:grid-cols-[1fr_1.6fr]">
+      <div class="reveal">
+        <p class="eyebrow">Questions fréquentes</p>
+        <h2 id="faq-titre" class="h2 uppercase">Puissance de clim : vos questions</h2>
+      </div>
+      <div class="reveal -mt-10"><Faq items={faq} /></div>
+    </div>
+  </section>
+
+  <DevisForm />
+</Layout>
+
+<style>
+  .calc-choice { position: relative; display: flex; align-items: center; gap: 0.6rem; min-height: 3rem; padding: 0.6rem 0.9rem; border: 1.5px solid var(--line); border-radius: 0.8rem; background: #fff; cursor: pointer; font-weight: 500; line-height: 1.25; }
+  .calc-choice:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+  .calc-choice input { accent-color: var(--accent-strong); width: 1.1rem; height: 1.1rem; flex-shrink: 0; }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('#calc');
+  if (form) {
+    const $ = (id: string) => document.getElementById(id)!;
+    const fr = (n: number, d = 1) => n.toLocaleString('fr-FR', { minimumFractionDigits: d, maximumFractionDigits: d });
+    const modeles = [2, 2.5, 3.5, 4.2, 5, 6, 7];
+    const calc = () => {
+      const f = new FormData(form);
+      const surface = Math.min(200, Math.max(5, Number(f.get('surface')) || 20));
+      const hauteur = Math.min(6, Math.max(2, Number(f.get('hauteur')) || 2.5));
+      const coefIso = { bonne: 33, moyenne: 40, faible: 48 }[String(f.get('isolation'))] ?? 40;
+      const coefExpo = { nord: 0.95, est: 1, sud: 1.12 }[String(f.get('exposition'))] ?? 1;
+      let w = surface * hauteur * coefIso * coefExpo;
+      if (f.get('toit')) w *= 1.15;
+      if (f.get('baies')) w *= 1.1;
+      w += Math.max(0, (Number(f.get('personnes')) || 2) - 2) * 100;
+      const kw = Math.round(w / 100) / 10;
+      $('r-kw').textContent = fr(kw);
+      $('r-btu').textContent = (Math.round((kw * 3412) / 100) * 100).toLocaleString('fr-FR');
+      $('r-range').textContent = `${fr(kw * 0.9)} – ${fr(kw * 1.1)}`;
+      const m = modeles.find((x) => x >= kw * 0.95);
+      $('r-modele').textContent = m ? `Monosplit ${fr(m)} kW` : 'Multisplit ou plusieurs unités';
+      $('r-note').textContent = m
+        ? (kw > 5 ? 'Grande pièce : deux unités peuvent répartir le froid plus uniformément.' : '')
+        : 'Au-delà de 7 kW, on répartit la puissance sur plusieurs unités intérieures.';
+      const msg = `Calculateur : pièce de ${surface} m² (${fr(hauteur)} m sous plafond), puissance estimée ${fr(kw)} kW.`;
+      $('r-cta').dataset.message = msg;
+    };
+    form.addEventListener('input', calc);
+    form.addEventListener('change', calc);
+    calc();
+  }
+</script>

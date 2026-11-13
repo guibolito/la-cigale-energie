@@ -124,10 +124,12 @@ const req = '<span class="text-[#b42318]" aria-hidden="true">*</span>';
     choose(demandeur, q.get('demandeur'));
     choose(besoin, q.get('besoin'));
     document.addEventListener('click', (e) => {
-      const a = (e.target as HTMLElement).closest<HTMLElement>('[data-besoin],[data-demandeur]');
+      const a = (e.target as HTMLElement).closest<HTMLElement>('[data-besoin],[data-demandeur],[data-message]');
       if (!a) return;
       choose(besoin, a.dataset.besoin);
       choose(demandeur, a.dataset.demandeur);
+      const msg = form.elements.namedItem('message') as HTMLTextAreaElement;
+      if (a.dataset.message && msg && !msg.value.trim()) msg.value = a.dataset.message;
     });
 
     form.addEventListener('submit', async (e) => {

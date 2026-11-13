@@ -1,0 +1,15 @@
+---
+import Icon from './Icon.astro';
+---
+<section class="pb-4" aria-label="Calculateur de puissance">
+  <div class="container-site">
+    <a href="/calculateur-clim" class="reveal group grid items-center gap-6 rounded-[1.75rem] bg-[linear-gradient(120deg,var(--accent),color-mix(in_srgb,var(--accent)_55%,var(--sun)))] p-7 text-ink shadow-[0_20px_50px_-30px_rgba(16,36,58,.6)] md:grid-cols-[auto_1fr_auto] md:p-9">
+      <span class="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-ink text-accent"><Icon name="target" size={32} /></span>
+      <span>
+        <span class="block font-display text-[clamp(1.7rem,4.5vw,2.4rem)] font-bold uppercase leading-tight">Quelle puissance de clim pour votre pièce ?</span>
+        <span class="mt-1 block font-medium">Estimez-la en 30 secondes avec notre calculateur gratuit, en kW et en BTU.</span>
+      </span>
+      <span class="btn bg-ink text-paper group-hover:bg-ink/90">Calculer <Icon name="arrow" size={18} class="transition group-hover:translate-x-1" /></span>
+    </a>
+  </div>
+</section>

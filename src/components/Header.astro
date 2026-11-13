@@ -4,10 +4,10 @@ import Icon from './Icon.astro';
 import { site } from '../config/site';
 import { avis } from '../data/avis';
 const links = [
-  { href: '/#services', label: 'Services' },
-  { href: '/#realisations', label: 'Réalisations' },
+  { href: '/climatisation', label: 'Climatisation' },
+  { href: '/calculateur-clim', label: 'Calculateur' },
+  { href: '/blog', label: 'Conseils' },
   ...(avis.length ? [{ href: '/#avis', label: 'Avis' }] : []),
-  { href: '/#zone', label: 'Zone' },
   { href: '/#faq', label: 'FAQ' },
 ];
 ---

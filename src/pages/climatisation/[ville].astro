@@ -1,0 +1,155 @@
+---
+// Page « Climatisation à <ville> » générée pour chaque ville de src/data/villes.ts
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
+import Faq from '../../components/Faq.astro';
+import DevisForm from '../../components/DevisForm.astro';
+import Etapes from '../../components/Etapes.astro';
+import { site } from '../../config/site';
+import { villes, villeParSlug, type Ville } from '../../data/villes';
+
+export function getStaticPaths() {
+  return villes.map((v) => ({ params: { ville: v.slug }, props: { v } }));
+}
+const { v } = Astro.props as { v: Ville };
+const proches = v.proches.map(villeParSlug).filter((x): x is Ville => !!x);
+
+const prestations = [
+  ['ac', 'Installation', `Clim mono ou multisplit, réversible, posée à ${v.nom} avec une puissance calculée pour votre logement.`],
+  ['shield', 'Entretien', 'Nettoyage, contrôle, rapport : visite ponctuelle ou contrat annuel avant l’été.'],
+  ['wrench', 'Dépannage', 'Plus de froid, fuite d’eau, code erreur, bruit : diagnostic sur place, prix annoncé avant réparation.'],
+  ['swap', 'Remplacement', 'Dépose de l’ancien appareil, récupération des fluides, pose d’un modèle récent plus sobre.'],
+] as const;
+
+const faq = [
+  v.faq,
+  { q: `Sous quel délai intervenez-vous à ${v.nom} ?`, a: 'Nous répondons à chaque demande sous 24 h ouvrées. La date d’intervention est fixée avec vous et indiquée sur le devis ; en dépannage, nous intervenons au plus vite.' },
+  { q: 'Le devis est-il gratuit ?', a: 'Oui, et sans engagement. Après une visite ou l’étude de quelques photos, vous recevez un devis écrit avec un prix ferme : c’est ce prix qui est facturé.' },
+  { q: 'Quelle puissance de clim choisir ?', a: 'Elle dépend de la surface, de la hauteur sous plafond, de l’exposition et de l’isolation. Notre calculateur en ligne donne une première estimation ; nous la confirmons lors du devis.' },
+];
+
+const url = new URL(`/climatisation/${v.slug}`, Astro.site).href;
+const jsonld = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: `Climatisation à ${v.nom}`,
+    serviceType: 'Installation, entretien, dépannage et remplacement de climatisation',
+    provider: { '@id': new URL('/#entreprise', Astro.site).href },
+    areaServed: { '@type': 'City', name: v.nom, address: { '@type': 'PostalAddress', postalCode: v.cp, addressRegion: 'Var', addressCountry: 'FR' } },
+    url,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Accueil', item: new URL('/', Astro.site).href },
+      { '@type': 'ListItem', position: 2, name: 'Climatisation', item: new URL('/climatisation', Astro.site).href },
+      { '@type': 'ListItem', position: 3, name: `Climatisation à ${v.nom}`, item: url },
+    ],
+  },
+];
+---
+<Layout
+  title={`Climatisation à ${v.nom} (${v.cp}) : pose, entretien, dépannage | ${site.name}`}
+  description={`Climatiseur à ${v.nom} : installation, entretien, dépannage et remplacement de climatisation réversible. Devis gratuit, prix ferme, réponse sous 24 h ouvrées.`}
+  jsonld={jsonld}
+>
+  <section class="hero-dark">
+    <div class="container-site py-12 md:py-20">
+      <nav aria-label="Fil d’Ariane" class="text-sm text-paper/60">
+        <a href="/" class="hover:text-paper hover:underline">Accueil</a> <span aria-hidden="true">/</span>
+        <a href="/climatisation" class="hover:text-paper hover:underline">Climatisation</a> <span aria-hidden="true">/</span>
+        <span aria-current="page">{v.nom}</span>
+      </nav>
+      <h1 class="mt-5 max-w-4xl text-[clamp(2.4rem,8vw,4.25rem)] uppercase">Climatisation à {v.nom}</h1>
+      <p class="mt-4 max-w-2xl text-xl font-medium text-accent">{v.accroche}</p>
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+        <a href="#devis" class="btn btn-primary text-lg" data-track="CTA devis" data-place={`ville-${v.slug}`}>Devis gratuit à {v.nom} <Icon name="arrow" /></a>
+        <a href={`tel:${site.phone.tel}`} class="btn btn-light text-lg" data-track="Appel" data-place={`ville-${v.slug}`}><Icon name="phone" /> {site.phone.display}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="intro-titre">
+    <div class="container-site grid gap-10 md:grid-cols-[1.3fr_1fr]">
+      <div class="reveal">
+        <p class="eyebrow">Votre climatisation à {v.nom}</p>
+        <h2 id="intro-titre" class="h2 uppercase">Un climatiseur adapté à votre logement</h2>
+        {v.intro.map((p) => <p class="mt-4 text-lg text-muted">{p}</p>)}
+      </div>
+      <aside class="reveal card self-start p-6">
+        <h3 class="text-2xl uppercase">Nous intervenons à {v.nom}</h3>
+        <ul class="mt-4 flex flex-wrap gap-2">
+          {v.secteurs.map((s) => <li class="rounded-full bg-accent-soft px-3 py-1.5 text-sm font-medium">{s}</li>)}
+        </ul>
+        <p class="mt-4 text-sm text-muted">{site.zoneFar}</p>
+        <a href="/calculateur-clim" class="mt-5 inline-flex items-center gap-2 font-semibold text-accent-strong hover:underline"><Icon name="target" size={18} /> Estimer la puissance de ma clim</a>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section bg-white" aria-labelledby="local-titre">
+    <div class="container-site">
+      <div class="reveal">
+        <p class="eyebrow">Bon à savoir</p>
+        <h2 id="local-titre" class="h2 uppercase">Les particularités de {v.nom}</h2>
+      </div>
+      <ul class="mt-10 grid gap-5 md:grid-cols-3">
+        {v.local.map((l) => (
+          <li class="card reveal p-6">
+            <span class="chip-icon"><Icon name="pin" size={22} /></span>
+            <h3 class="mt-4 text-2xl uppercase">{l.t}</h3>
+            <p class="mt-2 text-muted">{l.d}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="presta-titre">
+    <div class="container-site">
+      <div class="reveal">
+        <p class="eyebrow">Nos prestations</p>
+        <h2 id="presta-titre" class="h2 uppercase">Pose, entretien et dépannage de clim à {v.nom}</h2>
+      </div>
+      <ul class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {prestations.map(([i, t, d]) => (
+          <li class="card card-hover reveal flex flex-col p-6">
+            <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-accent text-ink"><Icon name={i} size={26} /></span>
+            <h3 class="mt-4 text-2xl uppercase">{t}</h3>
+            <p class="mt-2 flex-1 text-muted">{d}</p>
+            <a href="#devis" data-besoin={t} class="mt-4 inline-flex items-center gap-2 font-semibold text-accent-strong hover:underline">Demander un devis <Icon name="arrow" size={18} /></a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <Etapes />
+
+  <section class="section" aria-labelledby="faq-titre">
+    <div class="container-site grid gap-10 md:grid-cols-[1fr_1.6fr]">
+      <div class="reveal">
+        <p class="eyebrow">Questions fréquentes</p>
+        <h2 id="faq-titre" class="h2 uppercase">Climatisation à {v.nom} : vos questions</h2>
+        {proches.length > 0 && (
+          <div class="mt-8">
+            <p class="font-semibold">Nous intervenons aussi à :</p>
+            <ul class="mt-3 flex flex-wrap gap-2">
+              {proches.map((p) => <li><a href={`/climatisation/${p.slug}`} class="inline-block rounded-full border border-line bg-white px-3 py-1.5 text-sm font-medium hover:border-accent">Clim {p.nom}</a></li>)}
+            </ul>
+          </div>
+        )}
+      </div>
+      <div class="reveal -mt-10"><Faq items={faq} /></div>
+    </div>
+  </section>
+
+  <DevisForm />
+</Layout>

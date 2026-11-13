@@ -1,0 +1,22 @@
+---
+import ArticleCard from './ArticleCard.astro';
+import Icon from './Icon.astro';
+import { getCollection } from 'astro:content';
+const articles = (await getCollection('blog', (a) => !a.data.brouillon)).sort((a, b) => b.data.date.getTime() - a.data.date.getTime()).slice(0, 3);
+---
+{articles.length > 0 && (
+  <section id="conseils" class="section bg-white" aria-labelledby="conseils-titre">
+    <div class="container-site">
+      <div class="reveal grid gap-4 md:grid-cols-[1fr_auto] md:items-end">
+        <div>
+          <p class="eyebrow">Conseils</p>
+          <h2 id="conseils-titre" class="h2 uppercase">Tout savoir sur votre clim</h2>
+        </div>
+        <a href="/blog" class="btn btn-ghost">Tous nos conseils <Icon name="arrow" size={18} /></a>
+      </div>
+      <ul class="mt-10 grid gap-5 md:grid-cols-3">
+        {articles.map((a) => <li class="reveal"><ArticleCard slug={a.id} titre={a.data.titre} resume={a.data.resume} date={a.data.date} /></li>)}
+      </ul>
+    </div>
+  </section>
+)}

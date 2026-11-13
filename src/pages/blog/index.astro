@@ -1,0 +1,39 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import Icon from '../../components/Icon.astro';
+import { getCollection } from 'astro:content';
+import { site } from '../../config/site';
+
+const articles = (await getCollection('blog', (a) => !a.data.brouillon)).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const jsonld = [{
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  name: `Conseils climatisation | ${site.name}`,
+  url: new URL('/blog', Astro.site).href,
+  blogPost: articles.map((a) => ({ '@type': 'BlogPosting', headline: a.data.titre, url: new URL(`/blog/${a.id}`, Astro.site).href, datePublished: a.data.date.toISOString().slice(0, 10) })),
+}];
+---
+<Layout title={`Conseils climatisation : puissance, entretien, pannes | ${site.name}`} description="Nos conseils de pros pour bien choisir, installer et entretenir votre climatisation dans le Var : puissance, entretien obligatoire, copropriété, bord de mer, pannes." jsonld={jsonld}>
+  <section class="hero-dark">
+    <div class="container-site py-12 md:py-20">
+      <nav aria-label="Fil d’Ariane" class="text-sm text-paper/60"><a href="/" class="hover:text-paper hover:underline">Accueil</a> <span aria-hidden="true">/</span> <span aria-current="page">Conseils</span></nav>
+      <h1 class="mt-5 text-[clamp(2.4rem,8vw,4.25rem)] uppercase">Conseils <span class="text-accent">climatisation</span></h1>
+      <p class="mt-4 max-w-2xl text-lg text-paper/80">Choisir la bonne puissance, entretenir sa clim, éviter les pannes : nos réponses claires aux questions qu’on nous pose le plus souvent.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container-site">
+      <ul class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {articles.map((a) => <li class="reveal"><ArticleCard slug={a.id} titre={a.data.titre} resume={a.data.resume} date={a.data.date} /></li>)}
+      </ul>
+      <div class="reveal mt-12 flex flex-col items-start gap-4 rounded-[1.75rem] bg-ink p-7 text-paper md:flex-row md:items-center md:justify-between md:p-10">
+        <div>
+          <p class="font-display text-3xl font-bold uppercase">Quelle puissance pour votre pièce ?</p>
+          <p class="mt-1 text-paper/75">Estimez-la en 30 secondes avec notre calculateur.</p>
+        </div>
+        <a href="/calculateur-clim" class="btn btn-primary">Ouvrir le calculateur <Icon name="arrow" size={18} /></a>
+      </div>
+    </div>
+  </section>
+</Layout>

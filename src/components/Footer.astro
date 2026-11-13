@@ -3,11 +3,12 @@ import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 import { site, instagramUrl, whatsappUrl } from '../config/site';
 import { services } from '../config/services';
+import { villes } from '../data/villes';
 const l = site.legal;
 const legalLine = [l.company || site.name, l.form && (l.capital ? `${l.form} au capital de ${l.capital} €` : l.form), l.siret && `SIRET ${l.siret}`, l.rcs].filter(Boolean).join(' – ');
 ---
 <footer class="bg-ink text-paper">
-  <div class="container-site grid gap-10 py-14 md:grid-cols-3">
+  <div class="container-site grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-4">
     <div>
       <Logo variant="dark" />
       <p class="mt-4 max-w-xs text-paper/80">
@@ -29,9 +30,17 @@ const legalLine = [l.company || site.name, l.form && (l.capital ? `${l.form} au 
       <h2 class="font-display text-xl uppercase tracking-wide">Informations</h2>
       <ul class="mt-4 space-y-3">
         <li><a href="/climatisation" class="hover:underline">Climatisation</a></li>
+        <li><a href="/calculateur-clim" class="hover:underline">Calculateur de puissance</a></li>
+        <li><a href="/blog" class="hover:underline">Conseils climatisation</a></li>
         <li><a href="/#realisations" class="hover:underline">Nos réalisations</a></li>
         <li><a href="/mentions-legales" class="hover:underline">Mentions légales</a></li>
         <li><a href="/confidentialite" class="hover:underline">Politique de confidentialité</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2 class="font-display text-xl uppercase tracking-wide">Climatisation dans le {site.region}</h2>
+      <ul class="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+        {villes.map((v) => <li><a href={`/climatisation/${v.slug}`} class="text-paper/80 hover:text-paper hover:underline">Clim {v.nom}</a></li>)}
       </ul>
     </div>
   </div>

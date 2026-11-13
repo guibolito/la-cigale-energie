@@ -1,0 +1,20 @@
+---
+// Liens vers les pages « Climatisation à <ville> »
+import Icon from './Icon.astro';
+import { villes } from '../data/villes';
+import { site } from '../config/site';
+---
+<section class="section bg-white" aria-labelledby="villes-titre">
+  <div class="container-site">
+    <div class="reveal">
+      <p class="eyebrow">Près de chez vous</p>
+      <h2 id="villes-titre" class="h2 uppercase">Votre climatisation partout dans le {site.region}</h2>
+      <p class="mt-3 max-w-2xl text-muted">Installation, entretien et dépannage de climatisation dans tout le {site.region}. {site.zoneFar}</p>
+    </div>
+    <ul class="reveal mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+      {villes.map((v) => (
+        <li><a href={`/climatisation/${v.slug}`} class="card card-hover flex items-center justify-between gap-2 px-4 py-3 font-semibold"><span>Clim {v.nom}</span><Icon name="arrow" size={16} class="shrink-0 text-accent-strong" /></a></li>
+      ))}
+    </ul>
+  </div>
+</section>

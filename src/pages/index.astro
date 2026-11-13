@@ -8,6 +8,8 @@ import Etapes from '../components/Etapes.astro';
 import Realisations from '../components/Realisations.astro';
 import Avis from '../components/Avis.astro';
 import VarMap from '../components/VarMap.astro';
+import CalcTeaser from '../components/CalcTeaser.astro';
+import BlogTeaser from '../components/BlogTeaser.astro';
 import { site } from '../config/site';
 import { services, afficherBientot, accueilGeneraliste } from '../config/services';
 import HeroVisual from '../components/HeroVisual.astro';
@@ -163,6 +165,8 @@ const prestations = [
     </div>
   </section>
 
+  <CalcTeaser />
+
   <Realisations />
 
   <!-- ENGAGEMENTS -->
@@ -202,6 +206,8 @@ const prestations = [
       <div class="reveal"><VarMap /></div>
     </div>
   </section>
+
+  <BlogTeaser />
 
   <Avis />
 

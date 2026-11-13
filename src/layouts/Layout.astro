@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import MobileBar from '../components/MobileBar.astro';
 import { site, instagramUrl } from '../config/site';
+import { villes } from '../data/villes';
 
 interface Props {
   title: string;
@@ -25,7 +26,19 @@ const entreprise = {
   telephone: site.phone.tel,
   email: site.email,
   address: { '@type': 'PostalAddress', addressLocality: site.city, postalCode: '83400', addressCountry: 'FR' },
-  areaServed: { '@type': 'AdministrativeArea', name: site.region },
+  areaServed: [
+    { '@type': 'AdministrativeArea', name: 'Var (83)' },
+    { '@type': 'AdministrativeArea', name: 'Provence-Alpes-Côte d’Azur' },
+    ...villes.map((v) => ({ '@type': 'City', name: v.nom, postalCode: v.cp })),
+  ],
+  priceRange: 'Devis gratuit',
+  openingHours: 'Mo-Fr 08:00-18:00',
+  knowsAbout: ['Climatisation', 'Climatisation réversible', 'Installation de climatiseur', 'Entretien de climatisation', 'Dépannage de climatisation', 'Multisplit'],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Climatisation',
+    itemListElement: ['Installation de climatisation', 'Entretien de climatisation', 'Dépannage de climatisation', 'Remplacement de climatisation'].map((n) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: n, areaServed: 'Var' } })),
+  },
   sameAs: [instagramUrl],
 };
 ---
