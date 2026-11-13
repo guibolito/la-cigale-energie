@@ -20,10 +20,17 @@ const listeBientot = bientot.map((s) => s.name.toLowerCase()).join(', ').replace
 const nomsActifs = actifs.map((s) => s.name.toLowerCase()).join(', ');
 
 const faq = [
-  { q: 'Le devis est-il gratuit ?', a: 'Oui, et sans engagement. Après un échange et, si besoin, une visite ou quelques photos, vous recevez un devis écrit et détaillé, avec un prix ferme : c’est ce prix qui est facturé.' },
-  { q: 'Quels travaux proposez-vous aujourd’hui ?', a: `Aujourd’hui : ${nomsActifs}.${bientot.length ? ` D’autres domaines ouvriront bientôt : ${listeBientot}.` : ''}` },
-  { q: 'Sous quel délai répondez-vous ?', a: 'Nous répondons à chaque demande sous 24 h ouvrées. La date d’intervention est fixée avec vous et indiquée sur le devis.' },
-  { q: 'Comment préparer ma demande ?', a: 'Indiquez votre commune, le type de logement et ce que vous souhaitez. Quelques photos de l’existant (emplacement prévu, ancien appareil, tableau électrique) nous aident à chiffrer plus vite : vous pouvez les envoyer par WhatsApp.' },
+  { q: 'Le devis est-il gratuit ?', a: 'Oui, et sans engagement. Après un échange et, si besoin, une visite ou quelques photos, vous recevez un devis écrit et détaillé, avec un prix ferme : c’est ce prix qui est facturé, sans surprise.' },
+  ...(accueilGeneraliste ? [{ q: 'Quels travaux proposez-vous aujourd’hui ?', a: `Aujourd’hui : ${nomsActifs}.${bientot.length ? ` D’autres domaines ouvriront bientôt : ${listeBientot}.` : ''}` }] : []),
+  { q: 'Monosplit ou multisplit : quelle clim choisir ?', a: 'Le monosplit relie une unité intérieure à un groupe extérieur : idéal pour une pièce. Le multisplit relie plusieurs unités intérieures (séjour, chambres) à un seul groupe extérieur : plus discret et pratique pour climatiser plusieurs pièces. Nous vous conseillons selon votre logement, pas selon le catalogue.' },
+  { q: 'Combien de temps dure l’installation d’une climatisation ?', a: 'En général une journée pour un monosplit, une à deux journées pour un multisplit selon le nombre de pièces et les passages de liaisons. La durée exacte est indiquée sur le devis, et nous laissons le chantier propre.' },
+  { q: 'Une climatisation consomme-t-elle beaucoup d’électricité ?', a: 'Moins qu’on ne le croit : les modèles récents à technologie inverter adaptent leur puissance en continu. Le plus important est une puissance bien calculée et un bon réglage : autour de 26 °C en été, sans écart excessif avec l’extérieur. Un entretien régulier évite aussi la surconsommation.' },
+  { q: 'Une clim, est-ce bruyant ?', a: 'Les unités intérieures récentes sont très silencieuses, surtout en mode nuit. Côté extérieur, nous plaçons le groupe à l’écart des chambres (les vôtres et celles des voisins) et sur des supports anti-vibrations.' },
+  { q: 'Faut-il une autorisation pour installer une climatisation ?', a: 'En appartement, l’unité extérieure demande en général l’accord de l’assemblée générale de copropriété. En maison, une déclaration préalable en mairie peut être nécessaire si l’unité modifie l’aspect de la façade. Nous vous fournissons le descriptif technique pour vos démarches.' },
+  { q: 'Une clim réversible peut-elle chauffer en hiver ?', a: 'Oui : une clim réversible rafraîchit l’été et chauffe l’hiver, avec un très bon rendement grâce au principe de la pompe à chaleur. Dans le Var, elle peut assurer une grande partie du chauffage d’un logement bien isolé.' },
+  { q: 'À quelle fréquence faut-il entretenir sa clim ?', a: 'Un entretien par an est recommandé, idéalement au printemps. Pour les appareils réversibles de 4 à 70 kW, la réglementation impose même un entretien au moins tous les deux ans, avec une attestation à conserver.' },
+  { q: 'Dépannez-vous une clim que vous n’avez pas installée ?', a: 'Oui : plus de froid, fuite d’eau, code erreur, bruit anormal… nous faisons un diagnostic sur place et annonçons le prix avant toute réparation, quelle que soit l’entreprise qui l’a posée.' },
+  { q: 'Sous quel délai répondez-vous ?', a: 'Nous répondons à chaque demande sous 24 h ouvrées. La date d’intervention est fixée avec vous et indiquée sur le devis ; en dépannage, nous intervenons au plus vite.' },
   { q: 'Où intervenez-vous ?', a: `Nous intervenons ${site.zoneText}. ${site.zoneFar}` },
 ];
 const faqLd = {
