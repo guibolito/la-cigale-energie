@@ -11,7 +11,7 @@ export const site = {
   // Coordonnées affichées sur le site (à remplacer)
   phone: { display: '06 45 40 01 57', tel: '+33645400157' },
   whatsapp: '33645400157', // format international sans le +
-  email: 'contact@exemple.fr',
+  email: 'lacigale.energie@gmail.com',
   instagram: 'lacigale.energie', // nom du compte, sans @
   hours: 'Du lundi au vendredi, 8 h – 18 h',
 
