@@ -9,8 +9,8 @@ export const site = {
   region: 'Var',
 
   // Coordonnées affichées sur le site (à remplacer)
-  phone: { display: '06 00 00 00 00', tel: '+33600000000' },
-  whatsapp: '33600000000', // format international sans le +
+  phone: { display: '06 45 40 01 57', tel: '+33645400157' },
+  whatsapp: '33645400157', // format international sans le +
   email: 'contact@exemple.fr',
   instagram: 'lacigale.energie', // nom du compte, sans @
   hours: 'Du lundi au vendredi, 8 h – 18 h',
@@ -36,4 +36,6 @@ export const site = {
 };
 
 export const instagramUrl = `https://www.instagram.com/${site.instagram}/`;
-export const whatsappUrl = `https://wa.me/${site.whatsapp}`;
+// Message pré-rempli à l'ouverture de WhatsApp
+export const whatsappMessage = 'Bonjour, je souhaite un devis pour une climatisation.';
+export const whatsappUrl = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(whatsappMessage)}`;
