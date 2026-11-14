@@ -65,12 +65,12 @@ export const POST: APIRoute = async ({ request }) => {
     }),
   });
   if (res.ok) return json({ ok: true });
-  // Erreur Resend : visible dans Vercel > Logs, et renvoyée pour faciliter le diagnostic (aucune donnée secrète).
+  // Erreur Resend : le détail est visible uniquement dans Vercel > Logs (il peut contenir l'adresse du compte).
   let detail = '';
   try {
     const e = (await res.json()) as { message?: string; name?: string };
     detail = [e.name, e.message].filter(Boolean).join(' : ');
   } catch {}
   console.error('Resend', res.status, detail);
-  return json({ ok: false, error: 'resend', status: res.status, detail }, 502);
+  return json({ ok: false, error: 'resend' }, 502);
 };
