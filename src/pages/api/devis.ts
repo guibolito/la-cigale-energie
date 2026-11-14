@@ -72,5 +72,7 @@ export const POST: APIRoute = async ({ request }) => {
     detail = [e.name, e.message].filter(Boolean).join(' : ');
   } catch {}
   console.error('Resend', res.status, detail);
-  return json({ ok: false, error: 'resend' }, 502);
+  // Renvoyé sans aucune adresse email, pour le diagnostic.
+  const raison = detail.replace(/[^\s()<>@]+@[^\s()<>@]+/g, '[email]').slice(0, 300);
+  return json({ ok: false, error: 'resend', status: res.status, raison }, 502);
 };
