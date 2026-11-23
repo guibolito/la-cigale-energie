@@ -1,0 +1,151 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import Faq from '../components/Faq.astro';
+import DevisForm from '../components/DevisForm.astro';
+import { site } from '../config/site';
+
+const faq = [
+  { q: 'Un monosplit ou un multisplit ?', a: 'Un monosplit relie une unité extérieure à une seule unité intérieure : idéal pour une pièce. Un multisplit relie un seul groupe extérieur à 2 à 5 unités intérieures : pratique pour plusieurs pièces, avec un seul appareil dehors. Au-delà de 5 pièces, on prévoit en général deux groupes.' },
+  { q: 'Une clim réversible, c’est quoi ?', a: 'Elle fait du froid l’été et du chauffage en mi-saison, avec un très bon rendement. Aujourd’hui presque tous les splits sont réversibles : le surcoût est minime.' },
+  { q: 'Mural, gainable ou cassette ?', a: 'Le mural est le plus courant et le plus économique. La cassette s’encastre dans le plafond pour les grandes pièces. Le gainable est invisible : seules des grilles apparaissent, mais il demande de la place dans les combles ou un faux plafond.' },
+  { q: 'Ce résultat est-il définitif ?', a: 'Non, c’est une préconisation de départ. Nous la confirmons lors de la visite ou sur photos, puis vous recevez un devis écrit avec un prix ferme.' },
+];
+const jsonld = [{
+  '@context': 'https://schema.org', '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+}];
+---
+<Layout
+  title={`Configurateur de climatisation : monosplit ou multisplit ? | ${site.name}`}
+  description="Décrivez votre logement pièce par pièce : nous vous conseillons la configuration idéale (monosplit, multisplit jusqu’à 5 unités, réversible) et vous recevez un devis gratuit."
+  jsonld={jsonld}
+>
+  <section class="hero-dark">
+    <div class="container-site py-12 md:py-16">
+      <nav aria-label="Fil d’Ariane" class="text-sm text-paper/60"><a href="/" class="hover:text-paper hover:underline">Accueil</a> <span aria-hidden="true">/</span> <span aria-current="page">Configurateur</span></nav>
+      <h1 class="mt-5 max-w-4xl text-[clamp(2.3rem,7.5vw,4rem)] uppercase">Quelle <span class="text-accent">configuration</span> de clim pour mon logement ?</h1>
+      <p class="mt-4 max-w-2xl text-lg text-paper/80">Pièce par pièce, nous vous conseillons le nombre d’unités, la puissance et le type d’appareil. Gratuit, sans inscription.</p>
+    </div>
+  </section>
+
+  <section class="relative z-10 -mt-8 pb-16" aria-label="Configurateur">
+    <div class="container-site grid gap-6 lg:grid-cols-[1.2fr_1fr]">
+      <form id="cfg" class="card grid gap-6 p-6 shadow-[0_20px_50px_-30px_rgba(16,36,58,.45)] md:p-8" novalidate>
+        <div>
+          <h2 class="text-xl uppercase">1. Votre logement</h2>
+          <div class="mt-3 grid gap-4 sm:grid-cols-2">
+            <div><label class="label" for="type">Type de logement</label><select id="type" name="type" class="field"><option>Maison</option><option>Appartement</option><option>Local professionnel</option></select></div>
+            <div><label class="label" for="isol">Isolation</label><select id="isol" name="isol" class="field"><option value="bonne">Bonne (récent)</option><option value="moyenne" selected>Moyenne / je ne sais pas</option><option value="faible">Faible (ancien)</option></select></div>
+            <div><label class="label" for="objectif">Objectif</label><select id="objectif" name="objectif" class="field"><option value="froid">Rafraîchir l’été</option><option value="mixte" selected>Froid l’été + chauffage mi-saison</option><option value="chauffage">Chauffage principal</option></select></div>
+            <div><label class="label" for="esthe">Esthétique</label><select id="esthe" name="esthe" class="field"><option value="std">Standard</option><option value="design">Discret (design)</option><option value="invisible">Invisible (gainable)</option></select></div>
+            <div><label class="label" for="silence">Silence</label><select id="silence" name="silence" class="field"><option>Normal</option><option>Important</option><option>Très important</option></select></div>
+            <div><label class="label" for="copro">Copropriété ?</label><select id="copro" name="copro" class="field"><option>Non</option><option>Oui</option></select></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center justify-between gap-3"><h2 class="text-xl uppercase">2. Vos pièces</h2><button type="button" id="add" class="btn btn-ghost">+ Ajouter une pièce</button></div>
+          <div id="rooms" class="mt-3 grid gap-4"></div>
+        </div>
+      </form>
+
+      <div class="lg:sticky lg:top-24 lg:self-start">
+        <div class="rounded-[1.75rem] bg-ink p-6 text-paper md:p-8" aria-live="polite">
+          <p class="eyebrow !text-sun">Notre préconisation</p>
+          <p id="r-titre" class="mt-2 font-display text-3xl font-bold uppercase leading-tight"></p>
+          <p id="r-sous" class="mt-2 text-paper/75"></p>
+          <ul id="r-list" class="mt-5 grid gap-2"></ul>
+          <p id="r-warn" class="mt-4 text-sm text-sun"></p>
+          <a href="#devis" id="r-cta" data-besoin="Installation" class="btn btn-primary mt-6 w-full text-lg" data-track="CTA devis" data-place="configurateur">Recevoir mon devis gratuit <Icon name="arrow" /></a>
+          <p class="mt-4 text-xs text-paper/60">Préconisation indicative, confirmée lors de la visite ou sur photos. Devis écrit avec prix ferme.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="faq-titre">
+    <div class="container-site grid gap-10 md:grid-cols-[1fr_1.6fr]">
+      <div class="reveal"><p class="eyebrow">Questions fréquentes</p><h2 id="faq-titre" class="h2 uppercase">Choisir sa configuration</h2></div>
+      <div class="reveal -mt-10"><Faq items={faq} /></div>
+    </div>
+  </section>
+
+  <DevisForm />
+</Layout>
+
+<script>
+  type Room = { nom: string; usage: string; surf: number; haut: number; expo: string; vit: number; toit: boolean; pers: number; dist: number };
+  const SIZES = [2, 2.5, 3.5, 5, 7];
+  const GRP: Record<number, [number, number]> = { 2: [3.5, 6], 3: [5.2, 7.5], 4: [7, 8.5], 5: [8, 10.5] };
+  const EXPO: Record<string, number> = { Nord: 1, Est: 1.05, Sud: 1.1, Ouest: 1.1 };
+  const fr = (n: number) => String(n).replace('.', ',');
+  const mk = (i: number): Room => ({ nom: i === 1 ? 'Séjour' : 'Pièce ' + i, usage: i === 1 ? 'Séjour' : 'Chambre', surf: i === 1 ? 25 : 12, haut: 2.5, expo: 'Sud', vit: 4, toit: false, pers: 2, dist: 5 });
+  const rooms: Room[] = [mk(1)];
+  const form = document.querySelector<HTMLFormElement>('#cfg')!;
+  const box = document.getElementById('rooms')!;
+  const sel = (id: string, v: string, o: string[]) => `<select data-k="${id}" class="field">${o.map((x) => `<option${x === v ? ' selected' : ''}>${x}</option>`).join('')}</select>`;
+  const num = (k: string, v: number, step = 1) => `<input data-k="${k}" type="number" inputmode="decimal" step="${step}" min="0" value="${v}" class="field" />`;
+  const draw = () => {
+    box.innerHTML = rooms.map((r, i) => `<div class="rounded-2xl border border-line p-4" data-i="${i}">
+      <div class="flex items-center justify-between"><b>Pièce ${i + 1}</b>${rooms.length > 1 ? '<button type="button" data-del class="text-sm text-accent-strong underline">Retirer</button>' : ''}</div>
+      <div class="mt-3 grid gap-3 sm:grid-cols-2">
+        <div><label class="label">Nom</label><input data-k="nom" class="field" value="${r.nom}" /></div>
+        <div><label class="label">Usage</label>${sel('usage', r.usage, ['Séjour', 'Chambre', 'Bureau', 'Cuisine ouverte', 'Salon + cuisine', 'Commerce / local'])}</div>
+        <div><label class="label">Surface (m²)</label>${num('surf', r.surf)}</div>
+        <div><label class="label">Hauteur sous plafond (m)</label>${num('haut', r.haut, 0.1)}</div>
+        <div><label class="label">Exposition</label>${sel('expo', r.expo, ['Nord', 'Est', 'Sud', 'Ouest'])}</div>
+        <div><label class="label">Surface vitrée (m²)</label>${num('vit', r.vit)}</div>
+        <div><label class="label">Personnes</label>${num('pers', r.pers)}</div>
+        <div><label class="label">Distance jusqu’au groupe extérieur (m)</label>${num('dist', r.dist)}</div>
+        <label class="calc-choice sm:col-span-2"><input type="checkbox" data-k="toit" ${r.toit ? 'checked' : ''} /><span>Dernier étage sous la toiture</span></label>
+      </div></div>`).join('');
+    calc();
+  };
+  const calc = () => {
+    const f = new FormData(form);
+    const isol = String(f.get('isol')), obj = String(f.get('objectif')), esthe = String(f.get('esthe')), silence = String(f.get('silence')), copro = String(f.get('copro'));
+    const kIso = ({ bonne: 30, moyenne: 40, faible: 52 } as any)[isol] ?? 40, hk = ({ bonne: 45, moyenne: 75, faible: 105 } as any)[isol] ?? 75;
+    const res = rooms.map((r) => {
+      const vol = (r.surf || 0) * (r.haut || 2.5);
+      const cool = vol * kIso * (EXPO[r.expo] || 1) * (r.toit ? 1.15 : 1) + (r.vit || 0) * 100 + Math.max(0, (r.pers || 0) - 2) * 100;
+      const heat = (vol / 2.5) * hk;
+      const need = Math.max(cool, obj === 'chauffage' ? heat : 0) / 1000;
+      const size = SIZES.find((x) => x >= need * 0.9) || 7;
+      const type = esthe === 'invisible' ? 'gainable' : r.surf > 45 ? 'cassette' : 'mural';
+      return { ...r, need, size, type, multi: need > 7.7 };
+    });
+    const n = res.length, sum = res.reduce((a, r) => a + r.size, 0), warn: string[] = [];
+    let groupes = 1, gk = res[0].size;
+    if (n > 1) {
+      const lim = GRP[Math.min(n, 5)];
+      gk = Math.min(lim[1], Math.max(lim[0], Math.round(sum * 0.65 * 2) / 2));
+      if (n > 5 || sum * 0.65 > lim[1] + 0.5) { groupes = 2; warn.push('Plusieurs groupes extérieurs seront nécessaires.'); }
+    }
+    res.forEach((r) => { if (r.dist > 25) warn.push(`${r.nom} : liaison longue (${r.dist} m), à vérifier.`); if (r.multi) warn.push(`${r.nom} : besoin élevé, 2 unités possibles.`); });
+    if (copro === 'Oui') warn.push('Copropriété : une autorisation pour le groupe extérieur peut être nécessaire.');
+    if (silence !== 'Normal') warn.push('Nous choisirons une gamme particulièrement silencieuse.');
+    document.getElementById('r-titre')!.textContent = n === 1 ? 'Un monosplit réversible' : `Un multisplit réversible, ${n} unités`;
+    document.getElementById('r-sous')!.textContent = n === 1 ? `Un groupe extérieur, une unité intérieure de ${fr(res[0].size)} kW.` : `${groupes > 1 ? groupes + ' groupes extérieurs' : '1 groupe extérieur d’environ ' + fr(gk) + ' kW'} pour ${n} unités intérieures.`;
+    document.getElementById('r-list')!.innerHTML = res.map((r) => `<li class="rounded-xl bg-paper/10 px-4 py-3"><b>${r.nom}</b> (${r.surf} m²)<br><span class="text-paper/80">Unité ${r.type} ${fr(r.size)} kW</span></li>`).join('');
+    document.getElementById('r-warn')!.textContent = warn.join(' ');
+    const obT = ({ froid: 'rafraîchir l’été', mixte: 'froid + chauffage mi-saison', chauffage: 'chauffage principal' } as any)[obj];
+    document.getElementById('r-cta')!.dataset.message = `Configurateur : ${f.get('type')}, isolation ${isol}, objectif ${obT}. ` + (n === 1 ? 'Monosplit' : 'Multisplit ' + n + ' unités') + ' réversible : ' + res.map((r) => `${r.nom} ${r.surf} m² → ${r.type} ${fr(r.size)} kW`).join(' ; ') + '.';
+  };
+  box.addEventListener('input', (e) => {
+    const t = e.target as HTMLInputElement; const k = t.dataset.k; const i = Number((t.closest('[data-i]') as HTMLElement)?.dataset.i);
+    if (!k || isNaN(i)) return;
+    (rooms[i] as any)[k] = t.type === 'checkbox' ? t.checked : t.type === 'number' ? parseFloat(t.value) || 0 : t.value;
+    calc();
+  });
+  box.addEventListener('click', (e) => { const b = (e.target as HTMLElement).closest('[data-del]'); if (b) { rooms.splice(Number((b.closest('[data-i]') as HTMLElement).dataset.i), 1); draw(); } });
+  document.getElementById('add')!.addEventListener('click', () => { rooms.push(mk(rooms.length + 1)); draw(); });
+  form.addEventListener('input', (e) => { if (!(e.target as HTMLElement).closest('#rooms')) calc(); });
+  form.addEventListener('change', (e) => { if (!(e.target as HTMLElement).closest('#rooms')) calc(); });
+  draw();
+</script>
+
+<style>
+  .calc-choice { position: relative; display: flex; align-items: center; gap: 0.6rem; min-height: 3rem; padding: 0.6rem 0.9rem; border: 1.5px solid var(--line); border-radius: 0.8rem; background: #fff; cursor: pointer; font-weight: 500; }
+  .calc-choice:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+  .calc-choice input { accent-color: var(--accent-strong); width: 1.1rem; height: 1.1rem; }
+</style>
