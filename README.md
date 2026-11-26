@@ -21,14 +21,12 @@ Où se trouvent les choses :
 - `src/styles/global.css` : couleurs (variables en haut)
 - `src/pages/api/devis.ts` : envoi des demandes de devis par email
 
-## Mettre en ligne (Vercel)
-1. vercel.com > Add New > Project > importer ce dépôt GitHub (Astro est détecté tout seul).
-2. Dans Settings > Environment Variables, ajouter :
-   - `RESEND_API_KEY` (clé créée sur resend.com)
-   - `DEVIS_TO_EMAIL` (adresse qui reçoit les demandes)
-   - `DEVIS_FROM_EMAIL` (facultatif, une fois votre domaine validé chez Resend)
-   puis relancer un déploiement (Deployments > Redeploy).
-3. Chaque modification poussée sur GitHub met le site à jour automatiquement.
+## Mettre en ligne (Cloudflare)
+1. dash.cloudflare.com > Workers & Pages > Create > Pages > Connect to Git > choisir ce dépôt.
+2. Build command : `npm run build` · Build output directory : `dist/client` · Branche : `main` (ou `cloudflare` tant que la bascule n'est pas faite).
+3. Settings > Variables and Secrets : ajouter `RESEND_API_KEY`, `DEVIS_TO_EMAIL` et, facultatif, `DEVIS_FROM_EMAIL` (type Secret pour la clé), puis redéployer.
+4. Domaine : Custom domains > ajouter le nom de domaine (Cloudflare crée les DNS tout seul si le domaine est chez eux).
+5. Chaque modification poussée sur GitHub met le site à jour automatiquement.
 
 ## Référencement (SEO)
 - Le site est caché à Google tant que `prelancement: true` dans `src/config/site.ts` : passer à `false` au lancement.

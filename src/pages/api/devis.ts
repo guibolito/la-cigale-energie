@@ -1,10 +1,11 @@
-// Route serveur (fonction Vercel) : reçoit le formulaire de devis et l'envoie par email via Resend.
-// Variables à définir dans Vercel > Project > Settings > Environment Variables :
+// Route serveur (Cloudflare) : reçoit le formulaire de devis et l'envoie par email via Resend.
+// Variables à définir dans Cloudflare > Workers & Pages > le projet > Settings > Variables and Secrets :
 //   RESEND_API_KEY             clé API Resend (https://resend.com)
 //   DEVIS_TO_EMAIL             adresse qui reçoit les demandes
 //   DEVIS_FROM_EMAIL           expéditeur, ex. "La Cigale Énergie <devis@votre-domaine.fr>"
 //                              (par défaut : onboarding@resend.dev, pour les tests)
 import type { APIRoute } from 'astro';
+import { env as cfEnv } from 'cloudflare:workers';
 
 export const prerender = false;
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
@@ -18,7 +19,7 @@ const json = (body: object, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
 
 export const POST: APIRoute = async ({ request }) => {
-  const env = process.env as Record<string, string | undefined>;
+  const env = cfEnv as unknown as Record<string, string | undefined>;
   let d: Record<string, string>;
   try {
     d = await request.json();
@@ -65,7 +66,7 @@ export const POST: APIRoute = async ({ request }) => {
     }),
   });
   if (res.ok) return json({ ok: true });
-  // Erreur Resend : le détail est visible uniquement dans Vercel > Logs (il peut contenir l'adresse du compte).
+  // Erreur Resend : le détail est visible uniquement dans Cloudflare > Logs (il peut contenir l'adresse du compte).
   let detail = '';
   try {
     const e = (await res.json()) as { message?: string; name?: string };

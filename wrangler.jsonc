@@ -1,0 +1,8 @@
+{
+  "name": "la-cigale-energie",
+  "compatibility_date": "2026-11-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "@astrojs/cloudflare/entrypoints/server",
+  "assets": { "binding": "ASSETS" },
+  "observability": { "enabled": true }
+}
