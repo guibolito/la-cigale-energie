@@ -4,5 +4,6 @@
   "compatibility_flags": ["nodejs_compat"],
   "main": "@astrojs/cloudflare/entrypoints/server",
   "assets": { "binding": "ASSETS" },
+  "vars": { "DEVIS_TO_EMAIL": "lacigale.energie@gmail.com" },
   "observability": { "enabled": true }
 }
