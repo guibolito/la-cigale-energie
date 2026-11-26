@@ -34,4 +34,4 @@ Dans l’arrière-pays (Draguignan, Brignoles), les hivers sont plus frais : on 
 
 Dans un logement bien isolé du littoral varois, une clim réversible bien dimensionnée peut assurer **l’essentiel du chauffage**. Dans une maison ancienne ou en arrière-pays, elle est souvent un excellent **complément** à un chauffage existant.
 
-Le dimensionnement est la clé : [estimez la puissance nécessaire](/calculateur-clim), puis [demandez-nous un devis](/climatisation#devis) pour un calcul précis.
+Le dimensionnement est la clé : [estimez la puissance nécessaire](/configurateur-clim), puis [demandez-nous un devis](/climatisation#devis) pour un calcul précis.

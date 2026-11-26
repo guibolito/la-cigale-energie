@@ -8,7 +8,7 @@ export default defineConfig({
   site: 'https://lacigaleenergie.fr',
   adapter: cloudflare(),
   // Ancienne adresse de la page clim : redirigée vers la nouvelle
-  redirects: { '/climatisation-hyeres': '/climatisation' },
+  redirects: { '/climatisation-hyeres': '/climatisation', '/calculateur-clim': '/configurateur-clim' },
   integrations: [sitemap({ filter: (page) => !page.includes('/404') && !page.includes('/api/') })],
   vite: { plugins: [tailwindcss()] },
 });

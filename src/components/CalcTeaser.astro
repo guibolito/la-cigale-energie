@@ -1,19 +1,15 @@
 ---
 import Icon from './Icon.astro';
 ---
-<section class="pb-4" aria-label="Calculateur de puissance">
+<section class="pb-4" aria-label="Simulateur de climatisation">
   <div class="container-site">
-    <a href="/calculateur-clim" class="reveal group grid items-center gap-6 rounded-[1.75rem] bg-[linear-gradient(120deg,var(--accent),color-mix(in_srgb,var(--accent)_55%,var(--sun)))] p-7 text-ink shadow-[0_20px_50px_-30px_rgba(16,36,58,.6)] md:grid-cols-[auto_1fr_auto] md:p-9">
+    <a href="/configurateur-clim" class="reveal group grid items-center gap-6 rounded-[1.75rem] bg-[linear-gradient(120deg,var(--accent),color-mix(in_srgb,var(--accent)_55%,var(--sun)))] p-7 text-ink shadow-[0_20px_50px_-30px_rgba(16,36,58,.6)] md:grid-cols-[auto_1fr_auto] md:p-9">
       <span class="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-ink text-accent"><Icon name="target" size={32} /></span>
       <span>
-        <span class="block font-display text-[clamp(1.7rem,4.5vw,2.4rem)] font-bold uppercase leading-tight">Quelle puissance de clim pour votre pièce ?</span>
-        <span class="mt-1 block font-medium">Estimez-la en 30 secondes avec notre calculateur gratuit, en kW et en BTU.</span>
+        <span class="block font-display text-[clamp(1.7rem,4.5vw,2.4rem)] font-bold uppercase leading-tight">Quelle clim pour votre logement ?</span>
+        <span class="mt-1 block font-medium">Puissance en kW et BTU, nombre d’unités, type d’appareil : gratuit, en 1 minute.</span>
       </span>
-      <span class="btn bg-ink text-paper group-hover:bg-ink/90">Calculer <Icon name="arrow" size={18} class="transition group-hover:translate-x-1" /></span>
-    </a>
-    <a href="/configurateur-clim" class="reveal group mt-4 flex flex-wrap items-center justify-between gap-3 rounded-[1.5rem] border-2 border-accent bg-white p-5 text-ink md:px-8">
-      <span><span class="block font-display text-2xl font-bold uppercase leading-tight">Plusieurs pièces ? Configurez votre clim</span><span class="mt-1 block text-muted">Questionnaire complet : monosplit ou multisplit, nombre d’unités, type d’appareil.</span></span>
-      <span class="btn btn-primary">Configurer <Icon name="arrow" size={18} class="transition group-hover:translate-x-1" /></span>
+      <span class="btn bg-ink text-paper group-hover:bg-ink/90">Simuler <Icon name="arrow" size={18} class="transition group-hover:translate-x-1" /></span>
     </a>
   </div>
 </section>

@@ -9,23 +9,29 @@ const faq = [
   { q: 'Un monosplit ou un multisplit ?', a: 'Un monosplit relie une unité extérieure à une seule unité intérieure : idéal pour une pièce. Un multisplit relie un seul groupe extérieur à 2 à 5 unités intérieures : pratique pour plusieurs pièces, avec un seul appareil dehors. Au-delà de 5 pièces, on prévoit en général deux groupes.' },
   { q: 'Une clim réversible, c’est quoi ?', a: 'Elle fait du froid l’été et du chauffage en mi-saison, avec un très bon rendement. Aujourd’hui presque tous les splits sont réversibles : le surcoût est minime.' },
   { q: 'Mural, gainable ou cassette ?', a: 'Le mural est le plus courant et le plus économique. La cassette s’encastre dans le plafond pour les grandes pièces. Le gainable est invisible : seules des grilles apparaissent, mais il demande de la place dans les combles ou un faux plafond.' },
+  { q: 'Comment est calculée la puissance ?', a: 'Pour chaque pièce, on part du volume (surface × hauteur sous plafond), multiplié par un besoin de froid qui dépend de l’isolation, puis ajusté selon l’exposition, les surfaces vitrées, un dernier étage sous toiture et le nombre d’occupants.' },
+  { q: 'kW ou BTU : quelle différence ?', a: 'Ce sont deux unités de puissance. 1 kW correspond à environ 3 400 BTU/h : un modèle « 9 000 BTU » fait donc environ 2,6 kW.' },
   { q: 'Ce résultat est-il définitif ?', a: 'Non, c’est une préconisation de départ. Nous la confirmons lors de la visite ou sur photos, puis vous recevez un devis écrit avec un prix ferme.' },
 ];
 const jsonld = [{
+  '@context': 'https://schema.org', '@type': 'WebApplication', name: 'Simulateur de climatisation : puissance et configuration',
+  applicationCategory: 'UtilitiesApplication', operatingSystem: 'Tous', offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+  url: new URL('/configurateur-clim', Astro.site).href, provider: { '@id': new URL('/#entreprise', Astro.site).href },
+}, {
   '@context': 'https://schema.org', '@type': 'FAQPage',
   mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
 }];
 ---
 <Layout
-  title={`Configurateur de climatisation : monosplit ou multisplit ? | ${site.name}`}
-  description="Décrivez votre logement pièce par pièce : nous vous conseillons la configuration idéale (monosplit, multisplit jusqu’à 5 unités, réversible) et vous recevez un devis gratuit."
+  title={`Calculateur de puissance et configurateur de clim (kW, BTU) gratuit | ${site.name}`}
+  description="Calculez gratuitement la puissance de clim en kW et BTU, pièce par pièce, et obtenez la configuration idéale (monosplit ou multisplit jusqu’à 5 unités, réversible). Devis gratuit."
   jsonld={jsonld}
 >
   <section class="hero-dark">
     <div class="container-site py-12 md:py-16">
-      <nav aria-label="Fil d’Ariane" class="text-sm text-paper/60"><a href="/" class="hover:text-paper hover:underline">Accueil</a> <span aria-hidden="true">/</span> <span aria-current="page">Configurateur</span></nav>
-      <h1 class="mt-5 max-w-4xl text-[clamp(2.3rem,7.5vw,4rem)] uppercase">Quelle <span class="text-accent">configuration</span> de clim pour mon logement ?</h1>
-      <p class="mt-4 max-w-2xl text-lg text-paper/80">Pièce par pièce, nous vous conseillons le nombre d’unités, la puissance et le type d’appareil. Gratuit, sans inscription.</p>
+      <nav aria-label="Fil d’Ariane" class="text-sm text-paper/60"><a href="/" class="hover:text-paper hover:underline">Accueil</a> <span aria-hidden="true">/</span> <span aria-current="page">Calculateur et configurateur</span></nav>
+      <h1 class="mt-5 max-w-4xl text-[clamp(2.3rem,7.5vw,4rem)] uppercase">Quelle <span class="text-accent">clim</span> pour mon logement ?</h1>
+      <p class="mt-4 max-w-2xl text-lg text-paper/80">Une pièce ou tout le logement : puissance en kW et BTU, nombre d’unités et type d’appareil. Gratuit, sans inscription.</p>
     </div>
   </section>
 
@@ -56,9 +62,33 @@ const jsonld = [{
           <p id="r-sous" class="mt-2 text-paper/75"></p>
           <ul id="r-list" class="mt-5 grid gap-2"></ul>
           <p id="r-warn" class="mt-4 text-sm text-sun"></p>
-          <a href="#devis" id="r-cta" data-besoin="Installation" class="btn btn-primary mt-6 w-full text-lg" data-track="CTA devis" data-place="configurateur">Recevoir mon devis gratuit <Icon name="arrow" /></a>
+          <a href="#devis" id="r-cta" data-besoin="Installation" class="btn btn-primary mt-6 w-full text-lg" data-track="CTA devis" data-place="simulateur">Recevoir mon devis gratuit <Icon name="arrow" /></a>
           <p class="mt-4 text-xs text-paper/60">Préconisation indicative, confirmée lors de la visite ou sur photos. Devis écrit avec prix ferme.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-white" aria-labelledby="comment-titre">
+    <div class="container-site grid gap-10 md:grid-cols-2">
+      <div class="reveal">
+        <p class="eyebrow">Bien comprendre</p>
+        <h2 id="comment-titre" class="h2 uppercase">Pourquoi la bonne puissance compte</h2>
+        <p class="mt-4 text-lg text-muted">Une clim <b class="text-ink">trop faible</b> tourne en permanence sans atteindre la température demandée. Une clim <b class="text-ink">trop puissante</b> démarre et s’arrête sans cesse : elle s’use plus vite, déshumidifie mal et consomme davantage.</p>
+        <p class="mt-4 text-lg text-muted">Dans le Var, l’exposition et l’isolation font souvent varier le besoin de 20 à 40 % pour une même surface. C’est pourquoi nous confirmons toujours le calcul avant le devis.</p>
+        <a href="/blog/quelle-puissance-climatisation" class="mt-5 inline-flex items-center gap-2 font-semibold text-accent-strong hover:underline">Lire notre guide complet <Icon name="arrow" size={18} /></a>
+      </div>
+      <div class="reveal">
+        <h3 class="text-2xl uppercase">Repères rapides (2,50 m sous plafond)</h3>
+        <table class="mt-4 w-full text-left">
+          <thead><tr class="border-b border-line text-sm uppercase text-muted"><th class="py-2">Surface</th><th>Puissance</th><th>Modèle courant</th></tr></thead>
+          <tbody class="font-medium">
+            <tr class="border-b border-line"><td class="py-3">10 m²</td><td>1 à 1,3 kW</td><td>2 kW</td></tr>
+            <tr class="border-b border-line"><td class="py-3">20 m²</td><td>2 à 2,5 kW</td><td>2,5 kW</td></tr>
+            <tr class="border-b border-line"><td class="py-3">30 m²</td><td>3 à 3,5 kW</td><td>3,5 kW</td></tr>
+            <tr><td class="py-3">40 m²</td><td>4 à 5 kW</td><td>5 kW</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </section>
@@ -126,7 +156,7 @@ const jsonld = [{
     if (silence !== 'Normal') warn.push('Nous choisirons une gamme particulièrement silencieuse.');
     document.getElementById('r-titre')!.textContent = n === 1 ? 'Un monosplit réversible' : `Un multisplit réversible, ${n} unités`;
     document.getElementById('r-sous')!.textContent = n === 1 ? `Un groupe extérieur, une unité intérieure de ${fr(res[0].size)} kW.` : `${groupes > 1 ? groupes + ' groupes extérieurs' : '1 groupe extérieur d’environ ' + fr(gk) + ' kW'} pour ${n} unités intérieures.`;
-    document.getElementById('r-list')!.innerHTML = res.map((r) => `<li class="rounded-xl bg-paper/10 px-4 py-3"><b>${r.nom}</b> (${r.surf} m²)<br><span class="text-paper/80">Unité ${r.type} ${fr(r.size)} kW</span></li>`).join('');
+    document.getElementById('r-list')!.innerHTML = res.map((r) => `<li class="rounded-xl bg-paper/10 px-4 py-3"><b>${r.nom}</b> (${r.surf} m²)<br><span class="text-paper/80">Unité ${r.type} ${fr(r.size)} kW · besoin ${fr(Math.round(r.need*10)/10)} kW (≈ ${(Math.round(r.need*3412/100)*100).toLocaleString('fr-FR')} BTU/h)</span></li>`).join('');
     document.getElementById('r-warn')!.textContent = warn.join(' ');
     const obT = ({ froid: 'rafraîchir l’été', mixte: 'froid + chauffage mi-saison', chauffage: 'chauffage principal' } as any)[obj];
     document.getElementById('r-cta')!.dataset.message = `Configurateur : ${f.get('type')}, isolation ${isol}, objectif ${obT}. ` + (n === 1 ? 'Monosplit' : 'Multisplit ' + n + ' unités') + ' réversible : ' + res.map((r) => `${r.nom} ${r.surf} m² → ${r.type} ${fr(r.size)} kW`).join(' ; ') + '.';

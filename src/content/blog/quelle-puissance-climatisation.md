@@ -58,6 +58,6 @@ Avec un multisplit, chaque unité intérieure est dimensionnée pour sa pièce, 
 
 ## Estimez votre puissance en 30 secondes
 
-Notre [calculateur de puissance de clim](/calculateur-clim) prend en compte la surface, la hauteur, l’exposition et l’isolation pour vous donner une première estimation.
+Notre [calculateur de puissance de clim](/configurateur-clim) prend en compte la surface, la hauteur, l’exposition et l’isolation pour vous donner une première estimation.
 
 Lors du devis, nous confirmons ce calcul **sur place ou sur photos** : c’est la garantie d’une clim ni trop petite, ni trop grosse. [Demandez votre devis gratuit](/climatisation#devis).
