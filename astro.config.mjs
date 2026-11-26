@@ -5,7 +5,7 @@ import cloudflare from '@astrojs/cloudflare';
 
 // Remplacez `site` par l'adresse définitive du site (ex. https://www.lacigale-energie.fr)
 export default defineConfig({
-  site: 'https://la-cigale-energie.vercel.app',
+  site: 'https://lacigaleenergie.fr',
   adapter: cloudflare(),
   // Ancienne adresse de la page clim : redirigée vers la nouvelle
   redirects: { '/climatisation-hyeres': '/climatisation' },
