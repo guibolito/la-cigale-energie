@@ -9,8 +9,8 @@ export const site = {
   region: 'Var',
 
   // Coordonnées affichées sur le site (à remplacer)
-  phone: { display: '06 45 40 01 57', tel: '+33645400157' },
-  whatsapp: '33645400157', // format international sans le +
+  phone: { display: '06 00 00 00 00', tel: '+33600000000' },
+  whatsapp: '33600000000', // format international sans le +
   email: 'lacigale.energie@gmail.com',
   instagram: 'lacigale.energie', // nom du compte, sans @
   hours: 'Du lundi au vendredi, 8 h – 18 h',
