@@ -7,7 +7,11 @@ import Icon from './Icon.astro';
 import { instagramUrl } from '../config/site';
 interface Props { titre?: string }
 const { titre = 'Le travail bien fait, en images' } = Astro.props;
-const photos: { src: string; alt: string }[] = [];
+const photos: { src: string; alt: string; pos?: string }[] = [
+  { src: '/realisations/groupe-exterieur-pose.jpg', alt: 'Groupe extérieur de climatisation posé sur plots antivibratiles, liaisons frigorifiques calorifugées sous goulotte' },
+  { src: '/realisations/unite-interieure-murale.jpg', alt: 'Unité intérieure murale de climatisation installée dans un séjour' },
+  { src: '/realisations/mise-en-service-manometres.jpg', alt: 'Mise en service d’un groupe extérieur : contrôle des pressions avec un manifold numérique', pos: 'center 35%' },
+];
 // 4 cases affichées (les photos en trop ne s'affichent pas : mettez les meilleures en premier).
 const cases = (photos.length ? photos : Array.from({ length: 4 }, () => null)).slice(0, 4);
 ---
@@ -24,7 +28,7 @@ const cases = (photos.length ? photos : Array.from({ length: 4 }, () => null)).s
       {cases.map((p, i) => (
         <li class:list={['overflow-hidden rounded-2xl md:col-span-2 md:aspect-auto', i === 0 ? 'col-span-2 aspect-[4/3] md:row-span-2' : 'aspect-[4/3]', i === 3 && 'hidden md:block']}>
           {p ? (
-            <img src={p.src} alt={p.alt} loading="lazy" class="h-full w-full object-cover transition duration-500 hover:scale-105" />
+            <img src={p.src} alt={p.alt} loading="lazy" style={p.pos ? `object-position:${p.pos}` : undefined} class="h-full w-full object-cover transition duration-500 hover:scale-105" />
           ) : (
             <div class="flex h-full w-full flex-col items-center justify-center gap-2 border border-dashed border-line bg-[linear-gradient(135deg,var(--accent-soft),white)] p-4 text-center text-sm font-medium text-muted">
               <Icon name="camera" size={28} class="text-accent-strong" />
@@ -33,7 +37,7 @@ const cases = (photos.length ? photos : Array.from({ length: 4 }, () => null)).s
           )}
         </li>
       ))}
-      <li class="col-span-2 flex flex-col items-start justify-center gap-4 rounded-2xl bg-ink p-6 text-paper md:col-span-2">
+      <li class:list={['col-span-2 flex flex-col items-start justify-center gap-4 rounded-2xl bg-ink p-6 text-paper', cases.length >= 4 ? 'md:col-span-2' : 'md:col-span-4']}>
         <p class="font-display text-2xl font-bold uppercase leading-tight">Le prochain chantier, c’est le vôtre ?</p>
         <a href="#devis" class="btn btn-primary" data-track="CTA devis" data-place="realisations">Demander un devis gratuit <Icon name="arrow" size={18} /></a>
       </li>
